@@ -1,7 +1,7 @@
 {
   "name": "expressts-cli",
   "version": "0.0.1",
-  "description": "",
+  "description": "TypeScript Express Start Project generator",
   "main": "src/index.ts",
   "scripts": {
     "build": " npm run clean && npm run compiler && npm run cp:templates ",
@@ -12,9 +12,12 @@
   "bin": {
     "exp-g": "./bin/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "cli",
+    "create-project"
+  ],
+  "author": "tranvd2010",
+  "license": "MIT",
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
@@ -25,7 +28,6 @@
   },
   "dependencies": {
     "commander": "^3.0.1",
-    "inquirer": "^7.0.0",
-    "ncp": "^2.0.0"
+    "inquirer": "^7.0.0"
   }
 }
