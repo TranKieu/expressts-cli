@@ -1,0 +1,8 @@
+package-lock.json
+ormconfig.json
+package-lock.json
+.vscode/
+node_modules/
+dist/
+.evn
+bin/
