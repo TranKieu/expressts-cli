@@ -116,6 +116,6 @@ export const modifyFile = async (
         }
 
         console.log(err);
-        throw err;
+        process.exit(1);
     }
 };

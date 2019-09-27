@@ -81,7 +81,7 @@ export class RESOURCEController implements Controller {
     next: NextFunction
   ): Promise<void> {
     /**
-     * await usersService.update({ })
+     * await Service.update({ })
      */
     let url = req.method + req.url;
     next(new MethodNotAllowed(url));

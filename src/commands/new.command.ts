@@ -7,6 +7,7 @@ import { isExists, copyDir, modifyFile, writeFile }
 // config
 import { pkg } from './configfile/package';
 import { orm } from './configfile/ormconfig';
+import { readFilebyLine } from '../utils/readFileByLine';
 
 
 // Database
@@ -113,7 +114,7 @@ export const createProject = async (name: string, options: Options) => {
     // dựa vào tất cả tạo file package
     await createPackage(projectDir);
 
-    console.log('\t %s Project ready!', chalk.green.bold(name));
+    console.log('\t %s Project ready!\n', chalk.green.bold(name));
 };
 
 async function addViewEngine(template: string | undefined, pDir: string) {
@@ -167,6 +168,15 @@ async function addViewEngine(template: string | undefined, pDir: string) {
         console.log(
             `\t ${chalk.green.bold(exServerdest)} updated successfully!`
         );
+
+        // đưa new IndexController vào controller/index.
+        let inCt = path.join(pDir, 'controllers/index.ts');
+        let inContent = await readFilebyLine('Index', inCt);
+        await writeFile(inCt, inContent);
+        console.log(
+            `\t ${chalk.green.bold('controllers/index.ts')} updated successfully!`
+        );
+
     } catch (error) {
         console.log(error);
         process.exit(1);

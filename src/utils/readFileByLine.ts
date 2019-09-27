@@ -4,98 +4,89 @@ import { promisify } from "util";
 
 const read = promisify(fs.readFile);
 
-/** parm: ten controller can luu
- * + doc tu dau  neu trong line KO co import thi add import vao
- * + doc toi CONTROLLER => kiem tra
- *        - cuoi dong la ]; oder ] thi nhet new vao trc
- *        - cuoi dong ko co thi dua new vao do
- * + ghi file ra
- */
+export const readFilebyLine =
+    async (controller: string, indexController: string): Promise<string> => {
 
-export const readFilebyLine = async (controller: string) => {
-    // thay bang process.pwd();
-    const indexController = path.resolve(
-        __dirname,
-        "templates/controller/index.ts"
-    );
-    // tao chuoi can dua vao
-    const conImport =
-        "import { " +
-        controller +
-        'Controller } from "./' +
-        controller.toLowerCase() +
-        '.controller";\r\n';
-    const conNew = "\r\n \t new " + controller + "Controller()\r\n";
+        // Tạo chuỗi cần đưa vào
+        const conImport =
+            "import { " +
+            controller +
+            'Controller } from "./' +
+            controller.toLowerCase() +
+            '.controller";\r\n';
+        const conNew = "\r\n \t new " + controller + "Controller()";
 
-    console.log(conImport);
-    console.log(conNew);
+        let result = "";
+        try {
+            let content = await read(indexController, { encoding: "utf8" });
+            let importFlag = true;
+            let newFlag = true;
+            let commaFlag = false;
+            let newLine = true;
 
-    let result = "";
-    try {
-        let content = await read(indexController, { encoding: "utf8" });
-        let importFlag = true;
-        let newFlag = true;
-        let commaFlag = false;
+            /**
+             * Làm ntn dc vì file ngắn
+             * Nếu xử lý File lớn thì dùng readline
+             */
+            let lines = content.split(/\r\n?|\n/);
 
-        /**
-         * Lamm dc vi file ngan
-         * neu dai dung readline
-         */
-        let lines = content.split(/\r\n?|\n/);
-
-        lines.forEach(line => {
-            // hinzufügen import
-            if (importFlag && line.indexOf("import") === -1) {
-                importFlag = false;
-                line += conImport;
-            }
-
-            if (commaFlag && line.includes("new")) {
-                commaFlag = false;
-                line = "," + line;
-            }
-
-            let index = line.lastIndexOf("[");
-            if (newFlag && index > 0) {
-                // gan vao sau [
-                let temp = line.slice(0, index + 1) + conNew;
-                newFlag = false;
-                // neu dang sau co new thi them dau phay
-                if (line.includes("new")) {
-                    temp += ", " + line.slice(index + 1);
-                } else if (line.includes("];")) {
-                    // ko co new va co ]; => ko can phay
-                    temp += line.slice(index + 1);
-                } else {
-                    // dong do ko co ca hai => doi den dong tiep theo
-                    commaFlag = true;
+            lines.forEach(line => {
+                // gắn import vào 
+                if (importFlag && line.indexOf("import") === -1) {
+                    importFlag = false;
+                    line += conImport;
                 }
-                line = temp;
+
+                // đưa new Controller vào 
+                if (commaFlag && line.includes("new")) {
+                    commaFlag = false;
+                    line = ",\r\n" + line;
+                }
+
+                let index = line.lastIndexOf("[");
+                if (newFlag && index > 0) {
+                    // đưa new Controller vào sau [ cuối cùng
+                    let temp = line.slice(0, index + 1) + conNew;
+                    newFlag = false;
+                    newLine = false;
+                    // Nếu đằng sau có Class khác thì thêm dấu phẩy
+                    if (line.includes("new")) {
+                        temp += ",\r\n " + line.slice(index + 1);
+                    } else if (line.includes("];")) {
+                        // ko có new và có ]; => chỉ có 1 class duy nhất
+                        temp += line.slice(index + 1);
+                    } else {
+                        // ko có cả 2 thì phải xem xét dòng tiếp theo
+                        commaFlag = true;
+                    }
+                    line = temp;
+
+                }
+
+                // Gắn từng dòng vào result
+                if (newLine) {
+                    result += line + "\r\n";
+                } else {
+                    result += line;
+                    newLine = true;
+                }
+            });
+
+        } catch (err) {
+            if (err.code === "ENOENT") {
+                console.error(`${indexController} does not exist!`);
             }
-            // chi kiem tra khi da add new controller
-
-            // gan lai line vao
-            result += line + "\r\n";
-        });
-        console.log("-------");
-        console.log("FILE: " + result);
-    } catch (err) {
-        if (err.code === "ENOENT") {
-            console.error(`${indexController} does not exist!`);
-            return;
+            console.log(err);
+            process.exit(1);
         }
-        console.log(err);
-        return;
-    }
+        return result;
+    };
 
-    console.log("File processed.");
-};
 /*
 const readline = require('readline');
 const fs = require('fs');
 
-// create instance of readline
-// each instance is associated with single input stream
+//
 let rl = readline.createInterface({
     input: fs.createReadStream('products.txt')
 });
@@ -110,6 +101,7 @@ rl.on('line', function(line) {
 
 // end
 rl.on('close', function(line) {
+    // Nếu in line_no ra thì có thể xử lý tạo file mới ở đây
     console.log('Total lines : ' + line_no);
 });
 */
@@ -122,7 +114,7 @@ var fs = require("fs"),
 
 var reader = readline.createInterface({
   input: fs.createReadStream("large-file.txt"),
-  output: fs.createWriteStream("/dev/null"),
+  output: fs.createWriteStream("/dev/null"), // luu truc tiep ra file
   terminal: false
 });
 
@@ -130,6 +122,4 @@ reader.on("line", function(line) {
   console.log("Line:", line);
   // them that o day
 });
-
-
 */
