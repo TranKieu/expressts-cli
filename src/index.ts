@@ -8,7 +8,7 @@ import { information } from './utils/information';
 import chalk from 'chalk';
 import path from 'path';
 
-const VERSION = '0.0.1';
+const VERSION = '1.0.0';
 const NAME = 'exp-g';
 /**
  * + exp-g new <name-Projekt> --yes : tạo projekt vs default option

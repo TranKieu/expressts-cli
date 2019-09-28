@@ -230,8 +230,7 @@ async function addDatabaseDrive(db: string, projectDir: string) {
 }
 
 /**
- * Thay bang install tung module thi hay hon
- * @param projectDir 
+ * Sau này thay bằng Install các Dependencies 
  */
 async function createPackage(projectDir: string) {
     // ghi file package

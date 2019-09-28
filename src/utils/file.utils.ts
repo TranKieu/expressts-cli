@@ -15,7 +15,6 @@ const write = promisify(fs.writeFile);
 /**
  * Luôn phải dùng await 
  * if(await isExists)
- * @param path 
  */
 export const isExists = async (path: string) => {
     try {
@@ -106,9 +105,7 @@ export const modifyFile = async (
         let modify = content.replace(search, matched => {
             return replaces[matched];
         });
-        // write file => phai xem no co ton tai ko neu co ko ghi aber ngay khi dua name vao
         await write(dest, modify, { encoding: "utf8" });
-
     } catch (err) {
         if (err.code === "ENOENT") {
             console.error(`\t ${chalk.red.bold(src)} does not exist!`);
