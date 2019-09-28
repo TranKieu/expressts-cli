@@ -12,18 +12,10 @@ import { readFilebyLine } from '../utils/readFileByLine';
 
 // Database
 const DB = ['mysql', 'mongodb', 'mssql', 'pg', 'oracledb'];
-const defaultDB = 'mysql';
-/**
- *      "mysql": "latest"
- */
+
 
 // Engine
 const ENGINE = [undefined, 'ejs', 'hbs'];
-const defaultEngine = 'ejs';
-/**
- * "ejs": "latest"
- */
-
 
 
 async function promptForDatabaseOption(): Promise<string> {
@@ -34,8 +26,7 @@ async function promptForDatabaseOption(): Promise<string> {
             type: 'list',
             name: 'database',
             message: 'Please choose which database to use',
-            choices: DB,
-            default: defaultDB
+            choices: DB
         }
     ];
 
@@ -51,8 +42,7 @@ async function promptForTemplateOption(): Promise<string> {
             type: 'list',
             name: 'template',
             message: 'Please choose which template engine for Project',
-            choices: ENGINE.splice(1),
-            default: defaultEngine
+            choices: ENGINE.splice(1)
         }
     ];
 
