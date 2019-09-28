@@ -18,8 +18,7 @@ export class ExpressServer implements HttpServer {
 
     private server: Express;
     private httpServer?: Server;
-    // xem lại để chạy chuẩn
-    private development = Environment.getENV() !== 'production' && true;
+    private development = Environment.getENV() === 'development';
 
 
     constructor(private controllers: Controller[]) { }

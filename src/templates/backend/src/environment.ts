@@ -4,8 +4,9 @@ export class Environment {
         return '/api/v1';
     }
 
+	// khi deloy thay bằng 'production'
     public static getENV() {
-        return (process.env.NODE_ENV) || 'production';
+        return (process.env.NODE_ENV) || 'development';
     }
 
     public static getPort(): number {
