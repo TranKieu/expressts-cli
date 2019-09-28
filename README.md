@@ -46,3 +46,7 @@ $ exp-g new <projectname> [options]
 ## License
 
 [MIT](LICENSE)
+
+## Todo
++ install automatically all the dependencies for the project.
++ publish the app to npm...
