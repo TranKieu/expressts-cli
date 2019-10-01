@@ -1,8 +1,8 @@
-import { Controller } from "./Controller";
-import { HttpServer } from "../server/HttpServer";
-import { Response, Request, NextFunction } from "express";
-import { MethodNotAllowed } from "../errors/methodnotallowed.error";;
-import { validate } from 'class-validator';
+import { Controller } from './Controller';
+import { HttpServer } from '../server/HttpServer';
+import { Response, Request, NextFunction } from 'express';
+import { MethodNotAllowed } from '../errors/methodnotallowed.error';
+import { Environment } from '../environment';
 
 // Service
 

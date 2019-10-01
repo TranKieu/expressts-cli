@@ -1,4 +1,4 @@
-import { HttpError } from "./HttpError";
+import { HttpError } from './HttpError';
 
 export class MethodNotAllowed extends HttpError {
     name = "MethodNotAllowedError";

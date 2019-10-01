@@ -3,7 +3,7 @@ import { HttpError } from '../errors/HttpError';
 import { NotFound } from '../errors/notfound.error';
 
 // Developent
-import { Environment } from "../environment";
+import { Environment } from '../environment';
 
 export const errorHandler = async (
   err: HttpError,

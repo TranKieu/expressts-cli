@@ -4,7 +4,7 @@ import chalk from 'chalk';
 export const generateService
     = async (svName: string, pathToService: string) => {
 
-        const filename = svName + 'Service.ts';
+        const filename = svName.toLowerCase() + '.service.ts';
 
         const newService = path.resolve(pathToService, filename);
 

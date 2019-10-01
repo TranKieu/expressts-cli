@@ -1,6 +1,6 @@
-import { getRepository } from "typeorm";
-import { ENTITY } from "../entity/ENTITY";
-export { ENTITY } from "../entity/ENTITY";
+import { getRepository } from 'typeorm';
+import { ENTITY } from 'entity/ENTITY';
+export { ENTITY } from '../entity/ENTITY';
 
 
 class ENTITYService {

@@ -7,7 +7,7 @@ import { writeFile } from '../utils/file.utils';
 export const generateController
     = async (ctName: string, pathToController: string) => {
 
-        const fileName = ctName + 'Controller.ts';
+        const fileName = ctName.toLowerCase() + '.controller.ts';
         const newCtl = path.resolve(pathToController, fileName);
 
         if (await isExists(newCtl)) {

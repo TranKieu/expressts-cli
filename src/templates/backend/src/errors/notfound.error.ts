@@ -1,4 +1,4 @@
-import { HttpError } from "./HttpError";
+import { HttpError } from './HttpError';
 
 export class NotFound extends HttpError {
     name = "ResourceNotFoundError";

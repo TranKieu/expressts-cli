@@ -4,7 +4,7 @@ import { ExpressServer } from './server/ExpressServer';
 // Controllers
 import { CONTROLLERS } from './controllers/index';
 
-import { createConnection } from "typeorm";
+import { createConnection } from 'typeorm';
 
 // ormconfig.json
 createConnection().then(async connection => {
