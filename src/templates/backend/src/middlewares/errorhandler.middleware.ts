@@ -11,22 +11,29 @@ export const errorHandler = async (
   res: Response,
   next: NextFunction
 ) => {
-  let errorResonse = {
-    success: false,
-    name: "Error",
-    message: "something wrong!",
-    error: {}
-  };
 
-  // Dua gia tri vao Response
-  errorResonse.name = err.name;
-  errorResonse.message = err.message; // cai nay se hien cho client
-  // err phai mo ta tot hon ve chi hien khi develop
-  errorResonse.error = err;
+  if (err instanceof HttpError) {
+    // Error chuẩn
+    let errorResonse = {
+      success: false,
+      name: "Error",
+      message: "something wrong!",
+      error: {}
+    };
 
-  // Gui ve
-  res.status(err.status);
-  res.json(errorResonse);
+    // Dua gia tri vao Response
+    errorResonse.name = err.name;
+    errorResonse.message = err.message; // cai nay se hien cho client
+    // err phai mo ta tot hon ve chi hien khi develop
+    errorResonse.error = err;
+
+    // Gui ve
+    res.status(err.status);
+    res.json(errorResonse);
+  } else {
+    // Error chưa được khai báo
+    res.status(404).json(err);
+  }
 };
 
 // catch 404 and forward to error handler

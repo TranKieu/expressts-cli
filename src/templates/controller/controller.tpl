@@ -4,8 +4,7 @@ import { Response, Request, NextFunction } from 'express';
 import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 import { Environment } from '../environment';
 
-// Service
-
+// Import Service
 
 export class RESOURCEController implements Controller {
 
@@ -34,9 +33,10 @@ export class RESOURCEController implements Controller {
 
   /** Các bước thực hiện:
    *   + Kiểm tra dữ liệu đầu vào
-   *   + lấy dữ liệu từ Service vs dữ liệu
-   *   + gửi về Client Data oder Exception
+   *   + lấy dữ liệu từ Service vs dữ liệu => trycatch
+   *   + gửi về Client Data oder next(Exception)
    */
+
   private async getAll(
     req: Request,
     res: Response,

@@ -5,8 +5,10 @@ export { ENTITY } from '../entity/ENTITY';
 
 class ENTITYService {
     /**
-     * + Validate tại Controller
-     * + Xử lý Error tại Controller
+     * + Validate đầu vào tại Controller
+     * + Validate Entity tại Service
+     * + Xử lý Error tại Controller vs next
+     * + Throw Error tại Service => chú ý loại lỗi
      */
 
     public async getById(id: number): Promise<ENTITY> {
