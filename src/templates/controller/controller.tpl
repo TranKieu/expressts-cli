@@ -4,7 +4,12 @@ import { Response, Request, NextFunction } from 'express';
 import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 import { Environment } from '../environment';
 
-// Import Service
+// Import Services
+
+
+// Middelwares
+// test middleware
+import { log } from '../middlewares/log.middleware'; 
 
 export class RESOURCEController implements Controller {
 
@@ -13,7 +18,7 @@ export class RESOURCEController implements Controller {
   init(httpServer: HttpServer): void {
 
     // Read Alle 
-    httpServer.get(`${this.router}`, this.getAll.bind(this));
+    httpServer.get(`${this.router}`, log.bind(this), this.getAll.bind(this));
 
     // Read One = id
     httpServer.get(`${this.router}/:id`, this.getById.bind(this));
@@ -38,76 +43,58 @@ export class RESOURCEController implements Controller {
    */
 
   private async getAll(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
     /**
      *  res.json(await Service.getAll());
      */
 
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async getById(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
 
     /**
      * Service.getById(+req.params.id)
      */
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async create(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
     /**
      * await Service.create(new);
      */
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async update(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
     /**
      * await Service.update({ })
      */
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async remove(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
     /**
      * await Service.remove(+req.params.id)
      */
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async removeAll(
-    req: Request,
-    res: Response,
-    next: NextFunction
+    req: Request, res: Response, next: NextFunction
   ): Promise<void> {
     /**
      * await Service.deleteALL()
      */
-    let url = req.method + req.url;
-    next(new MethodNotAllowed(url));
+    next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 }

@@ -7,3 +7,16 @@ export class HttpError extends Error {
     Object.setPrototypeOf(this, HttpError.prototype);
   }
 }
+
+/*
+export class EntityColumnNotFound extends Error {
+    name = "EntityColumnNotFound";
+    constructor(propertyPath: string) {
+        super();
+        // quan trong
+        Object.setPrototypeOf(this, EntityColumnNotFound.prototype);
+        this.message = `No entity column "${propertyPath}" was found.`;
+    }
+}
+
+*/
