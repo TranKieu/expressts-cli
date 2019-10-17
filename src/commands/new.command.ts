@@ -4,6 +4,7 @@ import * as path from 'path';
 
 import { isExists, copyDir, modifyFile, writeFile }
     from '../utils/file.utils';
+import { lastest } from '../utils/latestversion';
 // config
 import { pkg } from './configfile/package';
 import { orm } from './configfile/ormconfig';
@@ -121,11 +122,11 @@ async function addViewEngine(template: string | undefined, pDir: string) {
     let viewEngine = '';
     switch (template) {
         case 'hbs':
-            pkg.dependencies.hbs = 'latest';
+            pkg.dependencies.hbs = (await lastest('hbs')) as string;
             viewEngine = setEngine.replace(/ENGINE/g, 'hbs');
             break;
         case 'ejs':
-            pkg.dependencies.ejs = 'latest';
+            pkg.dependencies.ejs = (await lastest('ejs')) as string;
             viewEngine = setEngine.replace(/ENGINE/g, 'ejs');
         default:
             // undefined
@@ -177,29 +178,30 @@ async function addViewEngine(template: string | undefined, pDir: string) {
 async function addDatabaseDrive(db: string, projectDir: string) {
     switch (db) {
         case 'mssql':
-            pkg.dependencies.mssql = 'latest';
+            //lastest('mssql').then( version =>{ pkg.dependencies.mssql = <string> version });
+            pkg.dependencies.mssql = (await lastest('mssql')) as string;
             orm.type = 'mssql';
             orm.port = 1433;
             break;
         case 'mongodb':
-            pkg.dependencies.mongodb = 'latest';
+            pkg.dependencies.mongodb = (await lastest('mongodb')) as string;
             orm.type = 'mongodb';
             orm.port = 40167;
             orm.useNewUrlParser = true;
             orm.useUnifiedTopology = true;
             break;
         case 'pg':
-            pkg.dependencies.pg = 'latest';
+            pkg.dependencies.pg = (await lastest('pg')) as string;
             orm.type = 'pg';
             orm.port = 5432;
             break;
         case 'oracledb':
-            pkg.dependencies.oracledb = 'latest';
+            pkg.dependencies.oracledb = (await lastest('oracledb')) as string;
             orm.type = 'oracledb';
             orm.port = 1521;
             break;
         default:
-            pkg.dependencies.mysql = 'latest';
+            pkg.dependencies.mysql = (await lastest('mysql')) as string;
             orm.type = 'mysql';
             orm.port = 3306;
             break;
@@ -223,6 +225,19 @@ async function addDatabaseDrive(db: string, projectDir: string) {
  * Sau này thay bằng Install các Dependencies 
  */
 async function createPackage(projectDir: string) {
+    // devDependencies
+    pkg.devDependencies['@types/express'] = (await lastest('@types/express')) as string;
+    pkg.devDependencies['@types/node'] = (await lastest('@types/node')) as string;
+    pkg.devDependencies['ts-node'] = (await lastest('ts-node')) as string;
+    pkg.devDependencies['typescript'] = (await lastest('typescript')) as string;
+    pkg.devDependencies['nodemon'] = (await lastest('nodemon')) as string;
+
+    //Dependencies
+    pkg.dependencies['body-parser'] = (await lastest('body-parser')) as string;
+    pkg.dependencies['express'] = (await lastest('express')) as string;
+    pkg.dependencies['reflect-metadata'] = (await lastest('reflect-metadata')) as string;
+    pkg.dependencies['typeorm'] = (await lastest('typeorm')) as string;
+    pkg.dependencies['class-validator'] = (await lastest('class-validator')) as string;
     // ghi file package
     try {
         let pkgFile = path.resolve(projectDir, 'package.json');

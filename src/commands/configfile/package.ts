@@ -1,10 +1,10 @@
 
 class Dependencies {
-    "body-parser" = "latest";
-    "express" = "latest";
-    "reflect-metadata" = "latest";
-    "typeorm" = "latest";
-    "class-validator" = "latest";
+    "body-parser"?: string;
+    "express"?: string;
+    "reflect-metadata"?: string;
+    "typeorm"?: string;
+    "class-validator"?: string;
     // engine
     hbs?: string;
     ejs?: string;
