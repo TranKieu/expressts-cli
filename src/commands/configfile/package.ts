@@ -34,7 +34,8 @@ class Package {
     };
 
     keywords = [];
-    author = " ";
+    author = "tranvd2010 <tranvd2010@gmail.com>";
+	homepage = "";
     license = "ISC";
 
     devDependencies = {
