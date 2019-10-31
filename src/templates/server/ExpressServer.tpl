@@ -58,6 +58,9 @@ export class ExpressServer implements HttpServer {
         return this.httpServer;
     }
 
+	public shutdownServer() {
+			if (this.httpServer) this.httpServer.close();
+	}		
 
     private setupSercurityMiddlewares(server: Express) {
     }
