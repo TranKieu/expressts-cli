@@ -1,21 +1,23 @@
 import { Response, Request, NextFunction } from 'express';
-import { HttpError } from '../errors/HttpError';
+import { HttpError } from '../errors/./http-error';
 import { NotFound } from '../errors/notfound.error';
 
 // production = ko đưa chi tiết lỗi về client
-import { Environment } from "../environment";
+import { Environment } from '../environment';
 
 export const errorHandler = async (
-  err: HttpError, req: Request, res: Response, next: NextFunction
+  err: HttpError,
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
-
   if (err instanceof HttpError) {
     // Error chuẩn
     let errorResonse = {
       success: false,
-      name: "Error",
-      message: "something wrong!",
-      error: {}
+      name: 'Error',
+      message: 'something wrong!',
+      error: {},
     };
 
     // Dua gia tri vao Response
@@ -35,7 +37,9 @@ export const errorHandler = async (
 
 // catch 404 and forward to error handler
 export const cannotGet = async (
-  req: Request, res: Response, next: NextFunction
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   /** Các cách đưa lỗi ra tại Middlewares
    * + next(new Error())

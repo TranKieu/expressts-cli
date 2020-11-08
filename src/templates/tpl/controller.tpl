@@ -1,8 +1,10 @@
-import { Controller } from './Controller';
-import { HttpServer } from '../server/HttpServer';
+import { Controller } from './controller';
+import { HttpServer } from '../server/http-server';
 import { Response, Request, NextFunction } from 'express';
-import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 import { Environment } from '../environment';
+
+// Errors
+import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 
 // Import Services
 

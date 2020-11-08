@@ -1,5 +1,5 @@
-import { HttpServer } from '../server/HttpServer';
+import { HttpServer } from '../server/http-server';
 
 export interface Controller {
-    init(HttpServer: HttpServer): void;
+  init(HttpServer: HttpServer): void;
 }

@@ -1,11 +1,11 @@
-import { HttpError } from './HttpError';
+import { HttpError } from './http-error';
 
 export class MethodNotAllowed extends HttpError {
-    name = "MethodNotAllowedError";
-    status = 405;
-    constructor(methode: string) {
-        super();
-        Object.setPrototypeOf(this, MethodNotAllowed.prototype);
-        this.message = `Methode ${methode} is not allowed !`;
-    }
+  name = 'MethodNotAllowedError';
+  status = 405;
+  constructor(methode: string) {
+    super();
+    Object.setPrototypeOf(this, MethodNotAllowed.prototype);
+    this.message = `Methode ${methode} is not allowed !`;
+  }
 }

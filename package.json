@@ -7,7 +7,8 @@
     "build": " npm run clean && npm run compiler && npm run cp:templates ",
     "compiler": "tsc -p .",
     "clean": "shx rm -rf bin",
-    "cp:templates": "shx cp -R src/templates bin/"
+    "cp:templates": "shx cp -R src/templates bin/",
+    "update": "npm update"
   },
   "bin": {
     "exp-g": "./bin/index.js"
@@ -21,14 +22,14 @@
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/inquirer": "^6.5.0",
-    "@types/node": "^12.7.5",
-    "shx": "^0.3.2",
-    "typescript": "^3.6.3"
+    "@types/node": "^12.19.3",
+    "shx": "^0.3.3",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "commander": "^3.0.1",
-    "inquirer": "^7.0.0",
+    "commander": "^3.0.2",
+    "inquirer": "^7.3.3",
     "package-json": "^6.5.0"
   }
 }
