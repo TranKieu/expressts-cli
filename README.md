@@ -54,6 +54,18 @@ $ exp-g new <projectname> [options]
 
     -h, --help              output usage information
 
+Created new controller:
+
+```sh
+$ exp-g controller <name>
+```
+
+Created new Service:
+
+```sh
+$ exp-g service <name>
+```
+
 ## License
 
 [MIT](LICENSE)

@@ -1,11 +1,20 @@
 import { modifyFile, isExists } from '../utils/file.utils';
 import path from 'path';
 import chalk from 'chalk';
+import { capitalizeFirstLetter, wordUpperCase } from '../utils/generate.helper';
+
+/**
+ * @param svName
+ *  * + Viết thường,
+ * + Các từ cách nhau bằng -
+ *
+ * @param pathToService
+ */
 export const generateService = async (
   svName: string,
   pathToService: string
 ) => {
-  const filename = svName.toLowerCase() + '.service.ts';
+  const filename = svName + '.service.ts';
 
   const newService = path.resolve(pathToService, filename);
 
@@ -16,10 +25,11 @@ export const generateService = async (
 
   const tplSer = path.resolve(__dirname, '../templates/tpl/service.tpl');
 
-  const obj = svName.charAt(0).toLowerCase() + svName.slice(1);
+  const obj = wordUpperCase(svName);
+  const service = capitalizeFirstLetter(obj);
   const search = /ENTITY|obEntity/g;
   const replaces = {
-    ENTITY: svName,
+    ENTITY: service,
     obEntity: obj,
   };
 

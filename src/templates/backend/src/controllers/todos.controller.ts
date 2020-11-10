@@ -1,25 +1,37 @@
-import { Controller } from "./Controller";
-import { Todo } from "../entity/Todo";
-import { HttpServer } from "../server/http-server";
-import { ObjectID } from "mongodb";
-import { Response, Request, NextFunction } from "express";
-import { todoService } from "../services/todo.service";
-import { BadRequest } from "../errors/badrequest.error";
+import { Controller } from './Controller';
+import { Todo } from '../entity/Todo';
+import { HttpServer } from '../server/http-server';
+import { ObjectID } from 'mongodb';
+import { Response, Request, NextFunction } from 'express';
+import { todoService } from '../services/todo.service';
+import { BadRequest } from '../errors/badrequest.error';
 
-import { Environment } from "../environment";
+import { Environment } from '../environment';
 
-export class TodoController implements Controller {
+export class TodosController implements Controller {
   private router = `${Environment.getVersion()}/todos`;
 
   init(http: HttpServer): void {
     http.get(`${this.router}`, this.getAll.bind(this));
-    http.get(`${this.router}/:id([0-9a-fA-F]{24})`, this.get.bind(this));
+    http.get(
+      `${this.router}/:id([0-9a-fA-F]{24})`,
+      this.get.bind(this)
+    );
     http.post(`${this.router}`, this.create.bind(this));
 
-    http.put(`${this.router}/:id([0-9a-fA-F]{24})`, this.edit.bind(this));
+    http.put(
+      `${this.router}/:id([0-9a-fA-F]{24})`,
+      this.edit.bind(this)
+    );
 
-    http.delete(`${this.router}/:id([0-9a-fA-F]{24})`, this.delete.bind(this));
-    http.delete(`${this.router}`, this.deleteTodos.bind(this));
+    http.delete(
+      `${this.router}/:id([0-9a-fA-F]{24})`,
+      this.delete.bind(this)
+    );
+    http.delete(
+      `${this.router}`,
+      this.deleteTodos.bind(this)
+    );
   }
 
   /**
@@ -69,7 +81,11 @@ export class TodoController implements Controller {
     try {
       await todoService.create(todo);
       // hoan thanh gui result ve
-      res.status(200).json({ message: "phai gui gi ve neu ko no chay mai" });
+      res
+        .status(200)
+        .json({
+          message: 'phai gui gi ve neu ko no chay mai'
+        });
     } catch (error) {
       next(error);
     }
@@ -97,7 +113,7 @@ export class TodoController implements Controller {
     todo.content = content;
     todo.isCompleted = isCompleted;
     todo.created = created;
-    console.log("controll: ", todo);
+    console.log('controll: ', todo);
 
     try {
       // neu ko co gi thay doi no tra ve null
@@ -122,9 +138,11 @@ export class TodoController implements Controller {
 
       // Da tim thay thi phai xoa dc neu ko loi khac
       if (delResult) {
-        res.status(200).json({ message: "Delete thanh cong" });
+        res
+          .status(200)
+          .json({ message: 'Delete thanh cong' });
       } else {
-        res.status(404).json({ message: "Ko xoa gi het" });
+        res.status(404).json({ message: 'Ko xoa gi het' });
       }
     } catch (error) {
       next(error);
@@ -142,7 +160,9 @@ export class TodoController implements Controller {
 
     const ids: string[] = Object.values(req.body);
     // Validate id
-    const message = ids.filter((idTodo) => !idTodo.match(idRegexp)).join(", ");
+    const message = ids
+      .filter((idTodo) => !idTodo.match(idRegexp))
+      .join(', ');
 
     if (message.length === 0) {
       // Validate tat ca id oki moi thuc thi 1 luot
@@ -155,7 +175,7 @@ export class TodoController implements Controller {
         next(error);
         return; // loi dung lai luon
       }
-      res.send({ message: "Delete thanh cong" });
+      res.send({ message: 'Delete thanh cong' });
     } else {
       next(new BadRequest(message));
     }

@@ -10,11 +10,14 @@ import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 
 
 // Middelwares
+
 // test middleware
 import { log } from '../middlewares/log.middleware'; 
 
+// viet cac ly thuyet vao day
 export class RESOURCEController implements Controller {
 
+  // URL luôn là số nhiều
   private router = Environment.getVersion() + '/RESRCURI';
 
   init(httpServer: HttpServer): void {

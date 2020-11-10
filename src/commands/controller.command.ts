@@ -3,12 +3,21 @@ import path from 'path';
 import chalk from 'chalk';
 import { readFilebyLine } from '../utils/readFileByLine';
 import { writeFile } from '../utils/file.utils';
+import { capitalizeFirstLetter } from '../utils/generate.helper';
 
+/**
+ * @param ctName :
+ * + Viết thường,
+ * + Các từ cách nhau bằng - ?
+ * + Luôn là số nhiểu
+ *
+ * @param pathToController
+ */
 export const generateController = async (
   ctName: string,
   pathToController: string
 ) => {
-  const fileName = ctName.toLowerCase() + '.controller.ts';
+  const fileName = ctName + '.controller.ts';
   const newCtl = path.resolve(pathToController, fileName);
 
   if (await isExists(newCtl)) {
@@ -18,11 +27,12 @@ export const generateController = async (
 
   const tplctl = path.resolve(__dirname, '../templates/tpl/controller.tpl');
 
-  const reuri = ctName.toLowerCase() + 's';
+  // tên controller
+  const controller = capitalizeFirstLetter(ctName);
   const search = /RESOURCE|RESRCURI/g;
   const replaces = {
-    RESOURCE: ctName,
-    RESRCURI: reuri,
+    RESOURCE: controller,
+    RESRCURI: ctName,
   };
 
   try {
@@ -36,8 +46,9 @@ export const generateController = async (
   // update index Của controller
   const indexCt = path.resolve(pathToController, 'index.ts');
   try {
-    let content = await readFilebyLine(ctName, indexCt);
+    let content = await readFilebyLine(controller, indexCt);
     await writeFile(indexCt, content);
+
     console.log(
       `\t ${chalk.green.bold('controllers/index.ts')} updated successfully!`
     );

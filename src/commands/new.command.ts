@@ -7,13 +7,12 @@ import { lastest } from '../utils/latestversion';
 // config
 import { pkg } from './configfile/package';
 import { orm } from './configfile/ormconfig';
-import { readFilebyLine } from '../utils/readFileByLine';
 
 // Database
 const DB = ['mysql', 'mongodb', 'mssql', 'pg', 'oracledb'];
 
 // Engine
-const ENGINE = [undefined, 'ejs', 'hbs'];
+const ENGINE = ['no-engine', 'ejs', 'hbs'];
 
 async function promptForDatabaseOption(): Promise<string> {
   // Tạo Câu hỏi nhắc nhở
@@ -37,7 +36,7 @@ async function promptForTemplateOption(): Promise<string> {
       type: 'list',
       name: 'template',
       message: 'Please choose which template engine for Project',
-      choices: ENGINE.splice(1),
+      choices: ENGINE,
     },
   ];
 
@@ -47,7 +46,7 @@ async function promptForTemplateOption(): Promise<string> {
 
 interface Options {
   database: string;
-  template: string | undefined;
+  template: string;
   yes: boolean;
 }
 
@@ -66,7 +65,7 @@ export const createProject = async (name: string, options: Options) => {
   if (options.yes) {
     // Default Project yes = true
     options.database = 'mysql';
-    options.template = undefined;
+    options.template = 'no-engine';
   } else {
     // kiểm tra database
     if (DB.indexOf(options.database) == -1)
@@ -103,7 +102,7 @@ export const createProject = async (name: string, options: Options) => {
 };
 
 async function addViewEngine(template: string | undefined, pDir: string) {
-  if (template === undefined) {
+  if (template === 'no-engine') {
     console.log(chalk.yellow('\t Does not need Views!'));
     return;
   }
@@ -141,7 +140,7 @@ async function addViewEngine(template: string | undefined, pDir: string) {
       '{{TemplController}}': 'this.setupTemplate(this.server);',
     };
 
-    //let src = path.resolve(__dirname, '../templates/server/ExpressServer.tpl');
+    //
     let src = path.resolve(__dirname, '../templates/tpl/express-server.tpl');
     let exServerdest = path.join(pDir, 'server/express-server.ts');
 

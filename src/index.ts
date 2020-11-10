@@ -22,8 +22,8 @@ const NAME = 'exp-g';
  *  - Nếu ko có = viết sai thì dùng inquirer cho MissingOptions
  *
  *
- * + exp-g service <name> --entity <n>: tạo service vs entity
- * + exp-g controller <name>: tạo controller, phải input vào index
+ * + exp-g service <name> : tạo service
+ * + exp-g controller <name>: tạo controller và update index
  */
 program
   .version(VERSION)
@@ -44,6 +44,7 @@ program
   .description('Create new Project')
   .action((project, options) => createProject(project, options));
 
+// Tạo service
 program
   .command('service <svName>')
   .alias('s')
@@ -55,32 +56,28 @@ program
     if (pathToService === undefined) {
       console.log(chalk.red.bold('Project does not exits!'));
     } else {
+      svName = svName.toLowerCase();
       // tạo service
       generateService(svName, pathToService);
-
-      // tạo Controller đi kèm
-      let pathToController = path.resolve(pathToService, '../controllers');
-      generateController(svName, pathToController);
     }
   });
 
+// Tạo Controller
 program
   .command('controller <ctName>')
   .alias('c')
   .description('generate new controller')
   .action(async (ctName) => {
-    // Such dir
+    // Such dir xem có ordner = /src/controllers
     let pathToController = await searchDir('controllers');
 
     if (pathToController === undefined) {
       console.log(chalk.red.bold('Project does not exits!'));
     } else {
+      // đưa ctName về dạng lowerCase
+      ctName = ctName.toLowerCase();
       // tạo Controller
       generateController(ctName, pathToController);
-
-      let pathToService = path.resolve(pathToController, '../services');
-      // tạo service
-      generateService(ctName, pathToService);
     }
   });
 
