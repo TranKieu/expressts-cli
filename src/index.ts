@@ -6,7 +6,6 @@ import { generateController } from './commands/controller.command';
 import { searchDir } from './utils/generate.helper';
 import { information } from './utils/information';
 import chalk from 'chalk';
-import path from 'path';
 
 const VERSION = '1.0.0';
 const NAME = 'exp-g';

@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import * as path from 'path';
 
 import { isExists, copyDir, modifyFile, writeFile } from '../utils/file.utils';
-import { lastest } from '../utils/latestversion';
+import { lastest } from '../utils/generate.helper';
 // config
 import { pkg } from './configfile/package';
 import { orm } from './configfile/ormconfig';
@@ -30,7 +30,7 @@ async function promptForDatabaseOption(): Promise<string> {
 }
 
 async function promptForTemplateOption(): Promise<string> {
-  // ENGINE: xoa undefined
+  // ENGINE
   const questions = [
     {
       type: 'list',
