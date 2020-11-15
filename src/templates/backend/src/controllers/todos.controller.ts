@@ -9,57 +9,84 @@ import { BadRequest } from '../errors/badrequest.error';
 import { Environment } from '../environment';
 
 export class TodosController implements Controller {
-  private router = `${Environment.getVersion()}/todos`;
+  private path = `${Environment.getVersion()}/todos`;
 
+  // Regular Express cho ID-path
+  private idRegexp: RegExp = /^[0-9a-fA-F]{24}$/;
+
+  /**
+   * Khai báo các Routes ở đây
+   * @param http : ExpressServer
+   *
+   * RequestHandler tương ứng với route sẽ được gọi:
+   *  + Ko có Argument vs bind: this.nameFunk.bind(this)
+   *  + vs Argument vs call: call.nameFunk.call(this, par...)
+   *
+   *  - this trong bind là chính nó chứ ko phải là class này.
+   */
   init(http: HttpServer): void {
-    http.get(`${this.router}`, this.getAll.bind(this));
+    /* => path für todos */
+
+    // Read Alle Todos
+    http.get(this.path, this.getAll.bind(this));
+
+    // Read One with id
     http.get(
-      `${this.router}/:id([0-9a-fA-F]{24})`,
+      `${this.path}/:id(${this.idRegexp})`,
       this.get.bind(this)
     );
-    http.post(`${this.router}`, this.create.bind(this));
 
+    // Create new Todo
+    http.post(`${this.path}`, this.create.bind(this));
+
+    // Update One with id
     http.put(
-      `${this.router}/:id([0-9a-fA-F]{24})`,
+      `${this.path}/:id([0-9a-fA-F]{24})`,
       this.edit.bind(this)
     );
 
+    // Delete One with id
     http.delete(
-      `${this.router}/:id([0-9a-fA-F]{24})`,
+      `${this.path}/:id([0-9a-fA-F]{24})`,
       this.delete.bind(this)
     );
+
+    // Delete Alle
     http.delete(
-      `${this.router}`,
+      `${this.path}`,
       this.deleteTodos.bind(this)
     );
   }
 
-  /**
+  /** => Nguyên tắc xử lý Request:
+   *
    * + Validate đầu vào tại Controller
    * + Validate Entity tại Service
    * + Xử lý Error tại Controller vs next
    * + Throw Error tại Service => chú ý loại lỗi
    */
-  // Lay het ra
+
   private async getAll(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     try {
+      // luôn phải dùng await
       res.json(await todoService.getAll());
     } catch (error) {
-      // phan chinh la oki neu co loi la do datatbase
-      // ko co Tabel, ko ket noi dc
+      // Lỗi đến từ Service = truy vấn Database
+      // bắn Error ra
       next(error);
     }
   }
+
   private async get(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    // dung Regexp tai url nen ko can validate
+    // DÙng Regular Express tại Url nên Id ko cần validate
     let id = new ObjectID(req.params.id);
     try {
       res.json(await todoService.getById(id));
@@ -67,7 +94,7 @@ export class TodosController implements Controller {
       next(error);
     }
   }
-  // create
+
   private async create(
     req: Request,
     res: Response,
@@ -80,43 +107,43 @@ export class TodosController implements Controller {
 
     try {
       await todoService.create(todo);
-      // hoan thanh gui result ve
-      res
-        .status(200)
-        .json({
-          message: 'phai gui gi ve neu ko no chay mai'
-        });
+      // Hoàn thành status = 200
+      res.status(200).json({
+        message: 'Tạo mới thành công!'
+      });
     } catch (error) {
       next(error);
     }
   }
 
-  // edit 1 todo
   private async edit(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
     let id = req.params.id;
-    // kiem tra id => ko can gi da co uri
-    const idRegexp: RegExp = /^[0-9a-fA-F]{24}$/;
-    if (!id.match(idRegexp)) {
+    // Validate đầu vào
+    if (!id.match(this.idRegexp)) {
+      // Đưa lỗi về ErrorHandler
+      // BadRequest = Tự khai báo
       next(new BadRequest(id));
+      // kết thúc để code sau ko chạy
       return;
     }
-    // neu ko co tu dong = undefined
-    let { content, isCompleted, created } = req.body;
+    // Nếu trong body ko có nó tự = undefined
+    let { content, isCompleted } = req.body;
 
     //Validate
     let todo = new Todo();
     todo.id = new ObjectID(id);
     todo.content = content;
     todo.isCompleted = isCompleted;
-    todo.created = created;
+
     console.log('controll: ', todo);
 
     try {
-      // neu ko co gi thay doi no tra ve null
+      // Nếu ko có gì thay đổi sẽ trả về null
+      // phải phát triền thêm về status trả về
       res.json(await todoService.update(todo));
     } catch (error) {
       next(error);
@@ -125,18 +152,15 @@ export class TodosController implements Controller {
     // oki => schreiben in datenbank
   }
 
-  // Xoa 1 todo
   private async delete(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    // validate id
     let id = new ObjectID(req.params.id);
     try {
       let delResult = await todoService.delete(id);
 
-      // Da tim thay thi phai xoa dc neu ko loi khac
       if (delResult) {
         res
           .status(200)
@@ -149,23 +173,19 @@ export class TodosController implements Controller {
     }
   }
 
-  // xoa vai todos => tich vai cai roi xoa
   private async deleteTodos(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    // chuan ca do dai
-    const idRegexp: RegExp = /^[0-9a-fA-F]{24}$/;
-
     const ids: string[] = Object.values(req.body);
     // Validate id
     const message = ids
-      .filter((idTodo) => !idTodo.match(idRegexp))
+      .filter((idTodo) => !idTodo.match(this.idRegexp))
       .join(', ');
 
     if (message.length === 0) {
-      // Validate tat ca id oki moi thuc thi 1 luot
+      // Validate tất cả ID thì xóa hết đi
       // remove duplicates
       const todoIds = [...new Set(ids)];
 

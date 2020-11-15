@@ -3,9 +3,9 @@ import {
   ObjectID,
   ObjectIdColumn,
   Column,
-  BeforeInsert,
-} from "typeorm";
-import { IsBoolean } from "class-validator";
+  BeforeInsert
+} from 'typeorm';
+import { IsBoolean } from 'class-validator';
 
 @Entity()
 export class Todo {
@@ -13,7 +13,7 @@ export class Todo {
   id: ObjectID;
 
   @Column({
-    unique: true,
+    unique: true
   })
   content: string;
 
@@ -21,14 +21,9 @@ export class Todo {
   @IsBoolean()
   isCompleted: boolean;
 
-  //@CreateDateColumn({ type: "timestamp" })
-  @Column({ type: "timestamp" })
-  created: Date;
-
-  // danh cho Default
+  // dành cho Default
   @BeforeInsert()
   beforeInsertAction() {
     this.isCompleted = false;
-    this.created = new Date();
   }
 }

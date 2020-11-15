@@ -2,5 +2,6 @@ ormconfig.json
 package-lock.json
 .vscode/
 node_modules/
+src/environment.ts
 dist/
 .evn

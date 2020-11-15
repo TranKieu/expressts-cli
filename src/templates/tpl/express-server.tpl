@@ -24,7 +24,6 @@ import { noCache } from "../middlewares/nocache.middleware";
 /**
  * helmet
  * compress
- * cros
  */
 export class ExpressServer implements HttpServer {
   private server: Express;
@@ -46,9 +45,11 @@ export class ExpressServer implements HttpServer {
      */
     // Đưa middleware cơ bản vào
     this.setupStandardMiddlewares(this.server);
-    // add các Sercurity Middleware vào => phải đúng thứ tự
+   
+   // add các Sercurity Middleware vào => phải đúng thứ tự
     this.setupSercurityMiddlewares(this.server);
-    // Đưa template vào nếu cần Font-end
+    
+	// Đưa template vào nếu cần Font-end
     this.setupTemplate(this.server);
 
     //addcontrollers
@@ -68,6 +69,11 @@ export class ExpressServer implements HttpServer {
   }
 
   private setupSercurityMiddlewares(server: Express) {
+	 * Global-Middlewares
+	 * Các middleware bảo mật quan trọng phải
+	 * được đưa vào trước để hoạt động trước khi
+	 * các Middleware khác hoạt động
+	 */
     server.use(noCache);
   }
 
@@ -87,15 +93,18 @@ export class ExpressServer implements HttpServer {
 
     server.use(bodyParser.json());
   }
-
+	// Gắn Engine cho Server để tạo Fontend
     //private setupTemplate(server: Express)
     {{TemplateFunktion}}
 
+  /** Gọi các Router ra */
   private addControllers() {
     // Chỉ dùng dc this khi sử dụng arrow Function
     // vì nó lấy this = Function ngoài nó chứ ko phải chính nó
-    this.controllers.forEach((controller) => controller.init(this));
-    /* 
+    this.controllers.forEach((controller) =>
+      controller.init(this)
+    );
+    /*  Nếu không dùng this
        this.controllers.forEach(function (controller) {
            controller.init(server);
        });
@@ -135,7 +144,7 @@ export class ExpressServer implements HttpServer {
     this.server.delete(url, handler);
   }
 
-  // Đưa các Router được add vào Server
+  // log = In các Router được khai báo ra  
   showRouter(method: String, url: string): void {
     if (this.development) console.log(`Added route: ${method} : ${url}`);
   }

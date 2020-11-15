@@ -48,9 +48,7 @@ export class ExpressServer implements HttpServer {
     this.setupStandardMiddlewares(this.server);
     // add các Sercurity Middleware vào => phải đúng thứ tự
     this.setupSercurityMiddlewares(this.server);
-    // Đưa template vào nếu cần Font-end
-    this.setupTemplate(this.server);
-
+    
     //addcontrollers
     this.addControllers();
 

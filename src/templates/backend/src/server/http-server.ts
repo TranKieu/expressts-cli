@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 
-/** RequestHandler có dạng:
+/** RequestHandler có dạng: = Middleware
  * 	export interface RequestHandler {
  * 	    (req: Request, res: Response): any;
  * 	    (req: Request, res: Response, next: NextFunction): any;
@@ -8,13 +8,19 @@ import { RequestHandler } from 'express';
  */
 
 export interface HttpServer {
+  /* Các Methode quan trọng của Server */
 
-    get(url: string, ...handler: RequestHandler[]): void;
+  // Lấy data từ Database
+  get(url: string, ...handler: RequestHandler[]): void;
 
-    post(url: string, ...handler: RequestHandler[]): void;
+  // Dưa data vào Database
+  post(url: string, ...handler: RequestHandler[]): void;
 
-    put(url: string, ...handler: RequestHandler[]): void;
+  // Cập nhật Data lên Database
+  put(url: string, ...handler: RequestHandler[]): void;
 
-    delete(url: string, ...handler: RequestHandler[]): void;
-    // Nếu cần thêm Methode thì khai báo vào đây
+  // Xóa data từ Database
+  delete(url: string, ...handler: RequestHandler[]): void;
+  
+  // Nếu cần thêm Methode thì khai báo vào đây
 }
