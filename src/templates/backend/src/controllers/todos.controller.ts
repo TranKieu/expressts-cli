@@ -12,7 +12,7 @@ export class TodosController implements Controller {
   private path = `${Environment.getVersion()}/todos`;
 
   // Regular Express cho ID-path
-  private idRegexp: RegExp = /^[0-9a-fA-F]{24}$/;
+    private idRegexp: string = '[0-9a-fA-F]{24}';
 
   /**
    * Khai báo các Routes ở đây
@@ -27,33 +27,33 @@ export class TodosController implements Controller {
   init(http: HttpServer): void {
     /* => path für todos */
 
-    // Read Alle Todos
+    // Read Alle Todos => học lấy dk cho RestFull
     http.get(this.path, this.getAll.bind(this));
 
     // Read One with id
     http.get(
-      `${this.path}/:id(${this.idRegexp})`,
+       `${this.path}/:id(${this.idRegexp})`,
       this.get.bind(this)
     );
 
     // Create new Todo
-    http.post(`${this.path}`, this.create.bind(this));
+    http.post(this.path, this.create.bind(this));
 
     // Update One with id
     http.put(
-      `${this.path}/:id([0-9a-fA-F]{24})`,
+       `${this.path}/:id(${this.idRegexp})`,
       this.edit.bind(this)
     );
 
     // Delete One with id
     http.delete(
-      `${this.path}/:id([0-9a-fA-F]{24})`,
+       `${this.path}/:id(${this.idRegexp})`,
       this.delete.bind(this)
     );
 
     // Delete Alle
     http.delete(
-      `${this.path}`,
+      this.path,
       this.deleteTodos.bind(this)
     );
   }
