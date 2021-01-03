@@ -1,5 +1,4 @@
-import express from "express";
-import { Express, RequestHandler } from "express";
+import express, { Express, RequestHandler } from "express";
 import { Server } from "http";
 import * as http from "http";
 import * as bodyParser from "body-parser";
@@ -53,7 +52,7 @@ export class ExpressServer implements HttpServer {
     this.setupTemplate(this.server);
 
     //addcontrollers
-    this.addControllers();
+    this.addControllers(this.controllers);
 
     // Error Handler
     this.setupErrorHandler(this.server);
@@ -98,10 +97,10 @@ export class ExpressServer implements HttpServer {
     {{TemplateFunktion}}
 
   /** Gọi các Router ra */
-  private addControllers() {
+  private addControllers(controllers: Controller[]) {
     // Chỉ dùng dc this khi sử dụng arrow Function
     // vì nó lấy this = Function ngoài nó chứ ko phải chính nó
-    this.controllers.forEach((controller) =>
+    controllers.forEach((controller) =>
       controller.init(this)
     );
     /*  Nếu không dùng this

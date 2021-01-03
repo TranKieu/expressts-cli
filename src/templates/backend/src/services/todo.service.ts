@@ -1,5 +1,7 @@
-import { getMongoRepository, ObjectID } from 'typeorm';
+import { getMongoRepository } from 'typeorm';
+import { ObjectID as ObjectIDType } from 'typeorm';
 import { Todo } from '../entity/todo';
+export { Todo } from '../entity/todo';
 import { NotFound } from '../errors/notfound.error';
 import { TodoExist } from '../errors/todoexist.error';
 import { validate } from 'class-validator';
@@ -13,11 +15,9 @@ class TodoService {
     }
   }
 
-  public async getById(id: ObjectID): Promise<Todo> {
+  public async getById(id: ObjectIDType): Promise<Todo> {
     try {
-      return await getMongoRepository(Todo).findOneOrFail(
-        id
-      );
+      return await getMongoRepository(Todo).findOneOrFail(id);
     } catch (error) {
       let message = `Todo: ${id}`;
       throw new NotFound(message);
@@ -39,9 +39,7 @@ class TodoService {
   public async update(todo: Todo): Promise<Todo> {
     try {
       // bt nên bắt hết lỗi đầu vào mới truy vấn
-      let upTodo = await getMongoRepository(
-        Todo
-      ).findOneOrFail(todo.id);
+      let upTodo = await getMongoRepository(Todo).findOneOrFail(todo.id);
       /** let result = x || 10; gt lại cái này khi xong angular
        *  result = 10 wenn x =
        *   +  0
@@ -54,9 +52,7 @@ class TodoService {
       upTodo.content = todo.content || upTodo.content;
 
       upTodo.isCompleted =
-        todo.isCompleted === undefined
-          ? upTodo.isCompleted
-          : todo.isCompleted;
+        todo.isCompleted === undefined ? upTodo.isCompleted : todo.isCompleted;
 
       /** Cách tìm hiểu lỗi
        *  + In Dữ liệu đầu vào ra để so sánh
@@ -84,12 +80,10 @@ class TodoService {
     }
   }
 
-  public async delete(id: ObjectID): Promise<Todo> {
+  public async delete(id: ObjectIDType): Promise<Todo> {
     let delTodo: Todo;
     try {
-      delTodo = await getMongoRepository(
-        Todo
-      ).findOneOrFail(id);
+      delTodo = await getMongoRepository(Todo).findOneOrFail(id);
       // tim thay thi xoa = tra lai todo co id = undefined
       /** Tìm thấy thì xóa . Return:
        *  + id = đã xóa todo có id đó
@@ -107,9 +101,7 @@ class TodoService {
     let todos: Todo[] = [];
     for (let i = 0; i < ids.length; i++) {
       try {
-        todos[i] = await getMongoRepository(
-          Todo
-        ).findOneOrFail(ids[i]);
+        todos[i] = await getMongoRepository(Todo).findOneOrFail(ids[i]);
       } catch (error) {
         throw new NotFound(`Todo: ${ids[i]}`);
       }

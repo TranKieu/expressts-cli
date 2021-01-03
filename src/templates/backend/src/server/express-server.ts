@@ -1,35 +1,33 @@
-import express from "express";
-import { Express, RequestHandler } from "express";
-import { Server } from "http";
-import * as http from "http";
-import * as bodyParser from "body-parser";
-import * as path from "path";
+import express, { Express, RequestHandler } from 'express';
+import { Server } from 'http';
+import * as http from 'http';
+import * as bodyParser from 'body-parser';
+import * as path from 'path';
 
 // From SRC
-import { Controller } from "../controllers/Controller";
-import { HttpServer } from "./http-server";
-import { Environment } from "../environment";
+import { Controller } from '../controllers/controller';
+import { HttpServer } from './http-server';
+import { Environment } from '../environment';
 
 // Middlewares
 import {
   errorHandler,
-  cannotGet,
-} from "../middlewares/errorhandler.middleware";
+  cannotGet
+} from '../middlewares/errorhandler.middleware';
 
 // tìm hiểu tại sao cần noCache
-import { noCache } from "../middlewares/nocache.middleware";
+import { noCache } from '../middlewares/nocache.middleware';
 
 // sử dụng khi cần đăng nhập
 // import { checkRole, authorization } from '../middlewares/auth.middleware';
 /**
  * helmet
  * compress
- * cros
  */
 export class ExpressServer implements HttpServer {
   private server: Express;
   private httpServer?: Server;
-  private development = Environment.getENV() === "development";
+  private development = Environment.getENV() === 'development';
 
   constructor(private controllers: Controller[]) {}
 
@@ -48,9 +46,9 @@ export class ExpressServer implements HttpServer {
     this.setupStandardMiddlewares(this.server);
     // add các Sercurity Middleware vào => phải đúng thứ tự
     this.setupSercurityMiddlewares(this.server);
-    
+
     //addcontrollers
-    this.addControllers();
+    this.addControllers(this.controllers);
 
     // Error Handler
     this.setupErrorHandler(this.server);
@@ -79,18 +77,17 @@ export class ExpressServer implements HttpServer {
   private setupStandardMiddlewares(server: Express) {
     server.use(
       bodyParser.urlencoded({
-        extended: true,
+        extended: true
       })
     );
 
     server.use(bodyParser.json());
   }
 
-
-  private addControllers() {
+  private addControllers(controllers: Controller[]) {
     // Chỉ dùng dc this khi sử dụng arrow Function
     // vì nó lấy this = Function ngoài nó chứ ko phải chính nó
-    this.controllers.forEach((controller) => controller.init(this));
+    controllers.forEach((controller) => controller.init(this));
     /* 
        this.controllers.forEach(function (controller) {
            controller.init(server);
@@ -111,23 +108,23 @@ export class ExpressServer implements HttpServer {
   }
 
   get(url: string, ...handler: RequestHandler[]): void {
-    this.showRouter("GET", url);
+    this.showRouter('GET', url);
     // handler tự động lấy req và res của Connection
     this.server.get(url, handler);
   }
 
   post(url: string, ...handler: RequestHandler[]): void {
-    this.showRouter("POST", url);
+    this.showRouter('POST', url);
     this.server.post(url, handler);
   }
 
   put(url: string, ...handler: RequestHandler[]): void {
-    this.showRouter("PUT", url);
+    this.showRouter('PUT', url);
     this.server.put(url, handler);
   }
 
   delete(url: string, ...handler: RequestHandler[]): void {
-    this.showRouter("DELETE", url);
+    this.showRouter('DELETE', url);
     this.server.delete(url, handler);
   }
 

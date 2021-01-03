@@ -1,24 +1,31 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "es2015",
+    "module": "CommonJS",
     "sourceMap": true,
     "removeComments": true,
     "outDir": "./dist",
+    "baseUrl": "./",
     "rootDir": "./src",
-    "alwaysStrict": true,
-    //"strictNullChecks": true,
-    "moduleResolution": "node",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "declaration": false,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "lib": ["es2017", "es7", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "./dist"
   ]
 }

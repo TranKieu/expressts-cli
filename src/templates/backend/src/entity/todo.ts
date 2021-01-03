@@ -1,25 +1,20 @@
-import {
-  Entity,
-  ObjectID,
-  ObjectIdColumn,
-  Column,
-  BeforeInsert
-} from 'typeorm';
+import { Entity, ObjectIdColumn, Column, BeforeInsert } from 'typeorm';
+import { ObjectID as ObjectIDType } from 'typeorm';
 import { IsBoolean } from 'class-validator';
 
 @Entity()
 export class Todo {
   @ObjectIdColumn()
-  id: ObjectID;
+  id!: ObjectIDType;
 
   @Column({
     unique: true
   })
-  content: string;
+  content!: string;
 
   @Column()
   @IsBoolean()
-  isCompleted: boolean;
+  isCompleted!: boolean;
 
   // dành cho Default
   @BeforeInsert()

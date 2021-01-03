@@ -14,7 +14,6 @@ import { MethodNotAllowed } from '../errors/methodnotallowed.error';
 // test middleware
 import { log } from '../middlewares/log.middleware'; 
 
-// viet cac ly thuyet vao day
 export class RESOURCEController implements Controller {
 
   // URL luôn là số nhiều

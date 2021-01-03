@@ -1,43 +1,60 @@
-import "reflect-metadata";
-import { ExpressServer } from "./server/express-server";
+import 'reflect-metadata';
+import { ExpressServer } from './server/express-server';
 
 // Controllers
-import { CONTROLLERS } from "./controllers/index";
-import { Environment } from "./environment";
-import { createConnection } from "typeorm";
+import { CONTROLLERS } from './controllers/index';
+import { Environment } from './environment';
+import { ConnectionOptions, createConnection } from 'typeorm';
+
+// sửa lại từ ormconfig.json => khi build thì đổi
+
+// const connectionOptions: ConnectionOptions = {
+//   type: 'mongodb',
+//   host: 'localhost',
+//   port: 27017,
+//   username: '',
+//   password: '',
+//   database: 'todos',
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   synchronize: true,
+//   logging: false,
+//   entities: [__dirname + '/entity/**/*.{ts,js}']
+// };
+// createConnection( connectionOptions )
 
 // Sử dụng ormconfig.json nên func này để trống
 createConnection()
   .then(async (connection) => {
     const server = new ExpressServer(CONTROLLERS);
-    server.setup(Environment.getPort());
+    await server.setup(Environment.getPort());
     handleExit(server);
   })
-  .catch((error) => console.log("TypeORM connection error: ", error));
+  .catch((error) => console.log('TypeORM connection error: ', error));
 
 function handleExit(server: ExpressServer) {
-  process.on("uncaughtException", (err: Error) => {
-    console.error("uncaught Exception", err);
+  process.on('uncaughtException', (err: Error) => {
+    console.error('uncaught Exception', err);
     shutdown(1, server);
   });
 
-  process.on("unhandledRejection", (reason: {} | null | undefined) => {
-    console.error("Unhandled Rejection at promise", reason);
+  process.on('unhandledRejection', (reason: {} | null | undefined) => {
+    console.error('Unhandled Rejection at promise', reason);
     shutdown(2, server);
   });
 
-  process.on("SIGINT", () => {
-    console.error("SIGINT");
+  process.on('SIGINT', () => {
+    console.error('SIGINT');
     shutdown(128 + 2, server);
   });
 
-  process.on("SIGTERM", () => {
-    console.error("SIGTERM");
+  process.on('SIGTERM', () => {
+    console.error('SIGTERM');
     shutdown(128 + 2, server);
   });
 
-  process.on("exit", () => {
-    console.info("Exiting");
+  process.on('exit', () => {
+    console.info('Exiting');
   });
 }
 
@@ -54,11 +71,11 @@ function shutdown(exitCode: number, server: ExpressServer) {
   Promise.resolve()
     .then(() => server.shutdownServer())
     .then(() => {
-      console.info("Shutdown complete");
+      console.info('Shutdown complete');
       process.exit(exitCode);
     })
     .catch((err) => {
-      console.error("Error during shutdown", err);
+      console.error('Error during shutdown', err);
       process.exit(1);
     });
 }

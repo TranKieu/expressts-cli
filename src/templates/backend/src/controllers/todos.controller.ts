@@ -1,7 +1,8 @@
-import { Controller } from './Controller';
+import { Controller } from './controller';
 import { Todo } from '../entity/Todo';
 import { HttpServer } from '../server/http-server';
 import { ObjectID } from 'mongodb';
+import { ObjectID as ObjectIDType } from 'typeorm';
 import { Response, Request, NextFunction } from 'express';
 import { todoService } from '../services/todo.service';
 import { BadRequest } from '../errors/badrequest.error';
@@ -12,7 +13,7 @@ export class TodosController implements Controller {
   private path = `${Environment.getVersion()}/todos`;
 
   // Regular Express cho ID-path
-    private idRegexp: string = '[0-9a-fA-F]{24}';
+  private idRegexp: string = '[0-9a-fA-F]{24}';
 
   /**
    * Khai báo các Routes ở đây
@@ -31,31 +32,19 @@ export class TodosController implements Controller {
     http.get(this.path, this.getAll.bind(this));
 
     // Read One with id
-    http.get(
-       `${this.path}/:id(${this.idRegexp})`,
-      this.get.bind(this)
-    );
+    http.get(`${this.path}/:id(${this.idRegexp})`, this.get.bind(this));
 
     // Create new Todo
     http.post(this.path, this.create.bind(this));
 
     // Update One with id
-    http.put(
-       `${this.path}/:id(${this.idRegexp})`,
-      this.edit.bind(this)
-    );
+    http.put(`${this.path}/:id(${this.idRegexp})`, this.edit.bind(this));
 
     // Delete One with id
-    http.delete(
-       `${this.path}/:id(${this.idRegexp})`,
-      this.delete.bind(this)
-    );
+    http.delete(`${this.path}/:id(${this.idRegexp})`, this.delete.bind(this));
 
     // Delete Alle
-    http.delete(
-      this.path,
-      this.deleteTodos.bind(this)
-    );
+    http.delete(this.path, this.deleteTodos.bind(this));
   }
 
   /** => Nguyên tắc xử lý Request:
@@ -87,7 +76,7 @@ export class TodosController implements Controller {
     next: NextFunction
   ): Promise<void> {
     // DÙng Regular Express tại Url nên Id ko cần validate
-    let id = new ObjectID(req.params.id);
+    let id = new ObjectID(req.params.id) as ObjectIDType;
     try {
       res.json(await todoService.getById(id));
     } catch (error) {
@@ -135,7 +124,7 @@ export class TodosController implements Controller {
 
     //Validate
     let todo = new Todo();
-    todo.id = new ObjectID(id);
+    todo.id = new ObjectID(id) as ObjectIDType;
     todo.content = content;
     todo.isCompleted = isCompleted;
 
@@ -157,14 +146,12 @@ export class TodosController implements Controller {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    let id = new ObjectID(req.params.id);
+    let id = new ObjectID(req.params.id) as ObjectIDType;
     try {
       let delResult = await todoService.delete(id);
 
       if (delResult) {
-        res
-          .status(200)
-          .json({ message: 'Delete thanh cong' });
+        res.status(200).json({ message: 'Delete thanh cong' });
       } else {
         res.status(404).json({ message: 'Ko xoa gi het' });
       }

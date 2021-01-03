@@ -1,10 +1,7 @@
 import { Controller } from './controller';
 import { HttpServer } from '../server/http-server';
-import { Request, Response, NextFunction } from 'express';
-import {
-  log,
-  logWithPar
-} from '../middlewares/log.middleware';
+import { Request, Response } from 'express';
+import { log, logWithPar } from '../middlewares/log.middleware';
 import { Environment } from '../environment';
 
 export class IndexController implements Controller {
@@ -45,20 +42,14 @@ export class IndexController implements Controller {
    * + Throw Error tại Service => chú ý loại lỗi
    */
 
-  private async showIndex(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  private async showIndex(req: Request, res: Response): Promise<void> {
     // để test server bằng browser
     let inhalt = 'RUN';
     res.send(inhalt);
   }
 
   // nếu muốn test template
-  private async get(
-    req: Request,
-    res: Response
-  ): Promise<void> {
+  private async get(req: Request, res: Response): Promise<void> {
     res.render('index', { title: 'Hallo' });
   }
 }
