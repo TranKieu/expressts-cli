@@ -1,53 +1,47 @@
-
 class Dependencies {
-    "body-parser"?: string;
-    "express"?: string;
-    "reflect-metadata"?: string;
-    "typeorm"?: string;
-    "class-validator"?: string;
-    // engine
-    hbs?: string;
-    ejs?: string;
+  'body-parser'?: string;
+  'express'?: string;
+  'reflect-metadata'?: string;
+  'typeorm'?: string;
+  'class-validator'?: string;
+  // engine
+  hbs?: string;
+  ejs?: string;
 
-    // database
-    mysql?: string;
-    mongodb?: string;
-    mssql?: string;
-    pg?: string;
-    oracledb?: string;
-
+  // database
+  mysql?: string;
+  mongodb?: string;
+  mssql?: string;
+  pg?: string;
+  oracledb?: string;
 }
 class Package {
-    name = 'tsexpressstart';
+  name = 'tsexpressstart';
 
-    version = "0.0.0";
+  version = '0.0.0';
 
-    description = "";
+  description = '';
 
-    main = "./src/app.ts";
+  main = './src/app.ts';
 
-    scripts = {
-        "start": "ts-node src/app.ts",
-        "dev": "nodemon --watch src -e ts,ejs --exec \" npm run serve \"",
-        "build": "tsc -p .",
-        "serve": "ts-node src/app.ts"
-    };
+  scripts = {
+    start: 'node dist/app',
+    dev: 'ts-node-dev --no-notify --respawn --transpile-only src/app',
+    build: 'tsc -p .'
+  };
 
-    keywords = [];
-    author = "tranvd2010 <tranvd2010@gmail.com>";
-	homepage = "";
-    license = "ISC";
+  keywords = [];
+  author = 'tranvd2010 <tranvd2010@gmail.com>';
+  homepage = 'https://trankieu.github.io';
 
-    devDependencies = {
-        "@types/express": "latest",
-        "@types/node": "latest",
-        "nodemon": "latest",
-        "ts-node": "latest",
-        "typescript": "latest"
-    };
+  devDependencies = {
+    '@types/express': 'latest',
+    '@types/node': 'latest',
+    'ts-node-dev': 'latest',
+    typescript: 'latest'
+  };
 
-
-    dependencies = new Dependencies();
+  dependencies = new Dependencies();
 }
 
 export const pkg = new Package();

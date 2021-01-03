@@ -21,8 +21,8 @@ async function promptForDatabaseOption(): Promise<string> {
       type: 'list',
       name: 'database',
       message: 'Please choose which database to use',
-      choices: DB,
-    },
+      choices: DB
+    }
   ];
 
   const answers = await inquirer.prompt<{ database: string }>(questions);
@@ -36,8 +36,8 @@ async function promptForTemplateOption(): Promise<string> {
       type: 'list',
       name: 'template',
       message: 'Please choose which template engine for Project',
-      choices: ENGINE,
-    },
+      choices: ENGINE
+    }
   ];
 
   const answers = await inquirer.prompt<{ template: string }>(questions);
@@ -137,7 +137,7 @@ async function addViewEngine(template: string | undefined, pDir: string) {
     let search = /{{TemplController}}|{{TemplateFunktion}}/g;
     let replaces = {
       '{{TemplateFunktion}}': viewEngine,
-      '{{TemplController}}': 'this.setupTemplate(this.server);',
+      '{{TemplController}}': 'this.setupTemplate(this.server);'
     };
 
     //
@@ -209,9 +209,8 @@ async function createPackage(projectDir: string) {
     '@types/express'
   )) as string;
   pkg.devDependencies['@types/node'] = (await lastest('@types/node')) as string;
-  pkg.devDependencies['ts-node'] = (await lastest('ts-node')) as string;
+  pkg.devDependencies['ts-node-dev'] = (await lastest('ts-node-dev')) as string;
   pkg.devDependencies['typescript'] = (await lastest('typescript')) as string;
-  pkg.devDependencies['nodemon'] = (await lastest('nodemon')) as string;
 
   //Dependencies
   pkg.dependencies['body-parser'] = (await lastest('body-parser')) as string;
