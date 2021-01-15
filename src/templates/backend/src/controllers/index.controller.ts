@@ -5,7 +5,7 @@ import { log, logWithPar } from '../middlewares/log.middleware';
 
 export class IndexController implements Controller {
   //private path = `${environment.API_URL}/path/`;
-  private path = `/`;
+  private path = '';
 
   init(http: HttpServer) {
     // Với Middleware = RequestHandler

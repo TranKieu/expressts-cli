@@ -223,6 +223,10 @@ async function createPackage(projectDir: string) {
   pkg.devDependencies['@types/node'] = (await lastest('@types/node')) as string;
   pkg.devDependencies['ts-node-dev'] = (await lastest('ts-node-dev')) as string;
   pkg.devDependencies['typescript'] = (await lastest('typescript')) as string;
+  pkg.devDependencies['morgan'] = (await lastest('morgan')) as string;
+  pkg.devDependencies['@types/morgan'] = (await lastest(
+    '@types/morgan'
+  )) as string;
 
   //Dependencies
   pkg.dependencies['body-parser'] = (await lastest('body-parser')) as string;

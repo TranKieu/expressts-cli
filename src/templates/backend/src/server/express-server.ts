@@ -3,6 +3,7 @@ import { Server } from 'http';
 import * as http from 'http';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
+import morgan from 'morgan';
 
 // From SRC
 import { Controller } from '../controllers/controller.interface';
@@ -67,6 +68,9 @@ export class ExpressServer implements HttpServer {
     /* Global-Middlewares */
     server.use(noCache);
     server.use(cors(environment.CORS_OPT));
+    if (this.development) {
+      server.use(morgan('dev'));
+    }
   }
 
   private listen(server: Express, port: number): Server {
