@@ -1,4 +1,4 @@
-import { Controller } from './controller';
+import { Controller } from './controller.interface';
 
 /* Test server */
 import { IndexController } from './index.controller';

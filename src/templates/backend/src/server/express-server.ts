@@ -5,16 +5,16 @@ import * as bodyParser from 'body-parser';
 import * as path from 'path';
 
 // From SRC
-import { Controller } from '../controllers/controller';
+import { Controller } from '../controllers/controller.interface';
 import { HttpServer } from './http-server';
-import { Environment } from '../environment';
+import { environment } from '../environment';
 
 // Middlewares
 import {
   errorHandler,
   cannotGet
 } from '../middlewares/errorhandler.middleware';
-
+import { cors } from '../middlewares/cors.middleware';
 // tìm hiểu tại sao cần noCache
 import { noCache } from '../middlewares/nocache.middleware';
 
@@ -25,9 +25,9 @@ import { noCache } from '../middlewares/nocache.middleware';
  * compress
  */
 export class ExpressServer implements HttpServer {
-  private server: Express;
-  private httpServer?: Server;
-  private development = Environment.getENV() === 'development';
+  private server!: Express;
+  private httpServer!: Server;
+  private development = environment.production === 'development';
 
   constructor(private controllers: Controller[]) {}
 
@@ -53,7 +53,7 @@ export class ExpressServer implements HttpServer {
     // Error Handler
     this.setupErrorHandler(this.server);
 
-    // thêm bước gán vào http để có thể tạo https oder socket
+    // Tạo https oder socket nếu cần
     this.httpServer = this.listen(this.server, port);
 
     return this.httpServer;
@@ -64,7 +64,9 @@ export class ExpressServer implements HttpServer {
   }
 
   private setupSercurityMiddlewares(server: Express) {
+    /* Global-Middlewares */
     server.use(noCache);
+    server.use(cors(environment.CORS_OPT));
   }
 
   private listen(server: Express, port: number): Server {
@@ -84,6 +86,7 @@ export class ExpressServer implements HttpServer {
     server.use(bodyParser.json());
   }
 
+  /** Gọi các Router ra */
   private addControllers(controllers: Controller[]) {
     // Chỉ dùng dc this khi sử dụng arrow Function
     // vì nó lấy this = Function ngoài nó chứ ko phải chính nó
@@ -128,7 +131,7 @@ export class ExpressServer implements HttpServer {
     this.server.delete(url, handler);
   }
 
-  //log
+  //log = In các Router được khai báo ra
   showRouter(method: String, url: string): void {
     if (this.development) console.log(`Added route: ${method} : ${url}`);
   }

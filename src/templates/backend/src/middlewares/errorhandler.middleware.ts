@@ -3,7 +3,7 @@ import { HttpError } from '../errors/./http-error';
 import { NotFound } from '../errors/notfound.error';
 
 // production = ko đưa chi tiết lỗi về client
-import { Environment } from '../environment';
+import { environment } from '../environment';
 
 export const errorHandler = async (
   err: HttpError,
@@ -17,7 +17,7 @@ export const errorHandler = async (
       success: false,
       name: 'Error',
       message: 'something wrong!',
-      error: {},
+      error: {}
     };
 
     // Dua gia tri vao Response

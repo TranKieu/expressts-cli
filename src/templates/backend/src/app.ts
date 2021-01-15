@@ -2,8 +2,8 @@ import 'reflect-metadata';
 import { ExpressServer } from './server/express-server';
 
 // Controllers
-import { CONTROLLERS } from './controllers/index';
-import { Environment } from './environment';
+import { CONTROLLERS } from './controllers';
+import { environment } from './environment';
 import { ConnectionOptions, createConnection } from 'typeorm';
 
 // sửa lại từ ormconfig.json => khi build thì đổi
@@ -27,7 +27,7 @@ import { ConnectionOptions, createConnection } from 'typeorm';
 createConnection()
   .then(async (connection) => {
     const server = new ExpressServer(CONTROLLERS);
-    await server.setup(Environment.getPort());
+    await server.setup(environment.PORT);
     handleExit(server);
   })
   .catch((error) => console.log('TypeORM connection error: ', error));

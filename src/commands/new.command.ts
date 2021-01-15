@@ -83,12 +83,12 @@ export const createProject = async (name: string, options: Options) => {
 
   // Copy Backend
   console.log(chalk.green.bold('\n\t Copy Templates:'));
-  let srcBackend = path.resolve(__dirname, '../templates/backend');
+  const srcBackend = path.resolve(__dirname, '../templates/backend');
   await copyDir(srcBackend, projectDir);
 
   console.log(chalk.green.bold('\n\t Add view engine:'));
   // addViewEngine
-  let destFontend = path.join(projectDir, 'src');
+  const destFontend = path.join(projectDir, 'src');
   await addViewEngine(options.template, destFontend);
 
   console.log();
@@ -128,21 +128,20 @@ async function addViewEngine(template: string | undefined, pDir: string) {
   }
   try {
     // copy fontend => tam thoi chi dung ejs
-    let srcFontend = path.resolve(__dirname, '../templates/fontend');
+    const srcFontend = path.resolve(__dirname, '../templates/fontend');
     await copyDir(srcFontend, pDir);
 
     // index.controller.ts có sẵn chỉ cần thay đổi
 
     // Ghi đè ServerExpress
-    let search = /{{TemplController}}|{{TemplateFunktion}}/g;
-    let replaces = {
-      '{{TemplateFunktion}}': viewEngine,
-      '{{TemplController}}': 'this.setupTemplate(this.server);'
+    const search = /{{TemplateFunktion}}/g;
+    const replaces = {
+      '{{TemplateFunktion}}': viewEngine
     };
 
     //
-    let src = path.resolve(__dirname, '../templates/tpl/express-server.tpl');
-    let exServerdest = path.join(pDir, 'server/express-server.ts');
+    const src = path.resolve(__dirname, '../templates/tpl/express-server.tpl');
+    const exServerdest = path.join(pDir, 'server/express-server.ts');
 
     // neu ben trong ko throw error thi luon luon oki
     await modifyFile(src, exServerdest, search, replaces);
@@ -158,11 +157,17 @@ async function addDatabaseDrive(db: string, projectDir: string) {
     case 'mssql':
       //lastest('mssql').then( version =>{ pkg.dependencies.mssql = <string> version });
       pkg.dependencies.mssql = (await lastest('mssql')) as string;
+      pkg.devDependencies['@types/mssql'] = (await lastest(
+        '@types/mssql'
+      )) as string;
       orm.type = 'mssql';
       orm.port = 1433;
       break;
     case 'mongodb':
       pkg.dependencies.mongodb = (await lastest('mongodb')) as string;
+      pkg.devDependencies['@types/mongodb'] = (await lastest(
+        '@types/mongodb'
+      )) as string;
       orm.type = 'mongodb';
       orm.port = 27017;
       orm.useNewUrlParser = true;
@@ -170,23 +175,30 @@ async function addDatabaseDrive(db: string, projectDir: string) {
       break;
     case 'pg':
       pkg.dependencies.pg = (await lastest('pg')) as string;
+      pkg.devDependencies['@types/pg'] = (await lastest('@types/pg')) as string;
       orm.type = 'pg';
       orm.port = 5432;
       break;
     case 'oracledb':
       pkg.dependencies.oracledb = (await lastest('oracledb')) as string;
+      pkg.devDependencies['@types/oracledb'] = (await lastest(
+        '@types/oracledb'
+      )) as string;
       orm.type = 'oracledb';
       orm.port = 1521;
       break;
     default:
       pkg.dependencies.mysql = (await lastest('mysql')) as string;
+      pkg.devDependencies['@types/mysql'] = (await lastest(
+        '@types/mysql'
+      )) as string;
       orm.type = 'mysql';
       orm.port = 3306;
       break;
   }
   // ghi file ormconfig.json
   try {
-    let ormFile = path.resolve(projectDir, 'ormconfig.json');
+    const ormFile = path.resolve(projectDir, 'ormconfig.json');
 
     await writeFile(ormFile, JSON.stringify(orm, undefined, 5));
     console.log(
@@ -224,7 +236,7 @@ async function createPackage(projectDir: string) {
   )) as string;
   // ghi file package
   try {
-    let pkgFile = path.resolve(projectDir, 'package.json');
+    const pkgFile = path.resolve(projectDir, 'package.json');
 
     await writeFile(pkgFile, JSON.stringify(pkg, undefined, 5));
     console.log(

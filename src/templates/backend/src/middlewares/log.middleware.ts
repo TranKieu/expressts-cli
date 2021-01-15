@@ -1,11 +1,9 @@
-import { Response, Request, NextFunction } from "express";
+import { Response, Request, NextFunction } from 'express';
 
-/** Cách Viết Middlerware
- *
- */
+/** Cách Viết Middlerware */
 export const log = async (req: Request, res: Response, next: NextFunction) => {
   // test local middlerware
-  console.log("LOG: ", req.url);
+  console.log('LOG: ', req.url);
   next();
 };
 

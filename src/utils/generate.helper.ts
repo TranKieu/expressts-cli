@@ -7,6 +7,22 @@ export const lastest = async (packageName: string) => {
   return version;
 };
 
+export const capitalizeFirstLetter = (name: string): string => {
+  return name.charAt(0).toUpperCase() + name.substr(1);
+};
+
+/** đưa tên file thành tên object
+ * wordUpperCase('header-tpl'); // headerTpl
+ */
+export function wordUpperCase(str: string): string {
+  return str.replace(
+    /(-)+(.)?/g,
+    (_match: string, _separator: string, chr: string) => {
+      return chr.toUpperCase();
+    }
+  );
+}
+
 export const searchDir = async (
   dirFor: string
 ): Promise<string | undefined> => {
@@ -27,7 +43,7 @@ export const searchDir = async (
     if (indSrc > 0) {
       // ở đâu đó dưới src
       let srcpath = pwdPath.slice(0, indSrc + 4);
-      return path.join(srcpath, dirFor);
+      return path.join(srcpath, dirFor) as string;
     } else {
       // ở ngoài thư mục src
       let hasSrc = false;
@@ -37,24 +53,9 @@ export const searchDir = async (
         }
       });
       if (hasSrc) {
-        return path.join(pwdPath, 'src', dirFor);
+        return path.join(pwdPath, 'src', dirFor) as string;
       }
     }
   }
+  return undefined;
 };
-
-export const capitalizeFirstLetter = (name: string): string => {
-  return name.charAt(0).toUpperCase() + name.substr(1);
-};
-
-/** đưa tên file thành tên object
- * wordUpperCase('header-tpl'); // headerTpl
- */
-export function wordUpperCase(str: string): string {
-  return str.replace(
-    /(-)+(.)?/g,
-    (_match: string, _separator: string, chr: string) => {
-      return chr.toUpperCase();
-    }
-  );
-}

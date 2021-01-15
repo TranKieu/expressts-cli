@@ -1,7 +1,7 @@
-import { Controller } from './controller';
+import { Controller } from './controller.interface';
 import { HttpServer } from '../server/http-server';
 import { Response, Request, NextFunction } from 'express';
-import { Environment } from '../environment';
+import { environment } from '../environment';
 
 // Errors
 import { MethodNotAllowed } from '../errors/methodnotallowed.error';
@@ -17,7 +17,7 @@ import { log } from '../middlewares/log.middleware';
 export class RESOURCEController implements Controller {
 
   // URL luôn là số nhiều
-  private router = Environment.getVersion() + '/RESRCURI';
+  private router = environment.API_URL + '/RESRCURI';
 
   init(httpServer: HttpServer): void {
 

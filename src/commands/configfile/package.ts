@@ -34,12 +34,9 @@ class Package {
   author = 'tranvd2010 <tranvd2010@gmail.com>';
   homepage = 'https://trankieu.github.io';
 
-  devDependencies = {
-    '@types/express': 'latest',
-    '@types/node': 'latest',
-    'ts-node-dev': 'latest',
-    typescript: 'latest'
-  };
+  devDependencies: {
+    [key: string]: string;
+  } = {};
 
   dependencies = new Dependencies();
 }
