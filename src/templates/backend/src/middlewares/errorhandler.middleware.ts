@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express';
-import { HttpError } from '../errors/./http-error';
-import { NotFound } from '../errors/notfound.error';
+import { HttpError } from '../errors/http-error';
+import { NotFound } from '../errors';
 
 // production = ko đưa chi tiết lỗi về client
 import { environment } from '../environment';

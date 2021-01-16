@@ -1,7 +1,7 @@
 export class HttpError extends Error {
-  name = "HttpError";
+  name = 'HttpError';
   status = 500;
-  message = "something wrong!";
+  message = 'something wrong!';
   constructor() {
     super();
     Object.setPrototypeOf(this, HttpError.prototype);
@@ -9,15 +9,15 @@ export class HttpError extends Error {
 }
 
 /*
-export class EntityColumnNotFound extends Error {
-    name = "EntityColumnNotFound";
+export class Some extends HttpError {
+    name = "SomeError";
+    status = 500; // Status http Code
+
     constructor(propertyPath: string) {
         super();
-        // quan trong
         Object.setPrototypeOf(this, EntityColumnNotFound.prototype);
+        // Tạo message bằng constructor
         this.message = `No entity column "${propertyPath}" was found.`;
     }
 }
-
 */
-// viet ly thuyet khai bao error vao day

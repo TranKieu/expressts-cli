@@ -1,20 +1,3 @@
-class Dependencies {
-  'body-parser'?: string;
-  'express'?: string;
-  'reflect-metadata'?: string;
-  'typeorm'?: string;
-  'class-validator'?: string;
-  // engine
-  hbs?: string;
-  ejs?: string;
-
-  // database
-  mysql?: string;
-  mongodb?: string;
-  mssql?: string;
-  pg?: string;
-  oracledb?: string;
-}
 class Package {
   name = 'tsexpressstart';
 
@@ -38,7 +21,9 @@ class Package {
     [key: string]: string;
   } = {};
 
-  dependencies = new Dependencies();
+  dependencies: {
+    [key: string]: string;
+  } = {};
 }
 
 export const pkg = new Package();

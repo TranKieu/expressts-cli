@@ -1,13 +1,13 @@
 {
   "name": "expressts-cli",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "TypeScript Express Start Project generator",
   "main": "src/index.ts",
   "scripts": {
     "build": " npm run clean && npm run compiler && npm run cp:templates ",
-    "compiler": "tsc -p .",
     "clean": "shx rm -rf bin",
     "cp:templates": "shx cp -R src/templates bin/",
+    "compiler": "tsc -p .",
     "update": "npm update"
   },
   "bin": {

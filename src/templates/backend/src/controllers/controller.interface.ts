@@ -20,7 +20,7 @@ export interface Controller {
    *
    * + Validate đầu vào tại Controller
    * + Validate Entity tại Service
-   * + Xử lý Error tại Controller vs next
+   * + Xử lý Error tại Controller vs next để ErrorHandler làm việc
    * + Throw Error tại Service => chú ý loại lỗi
    */
 }

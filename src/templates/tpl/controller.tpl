@@ -49,10 +49,8 @@ export class RESOURCEController implements Controller {
   private async getAll(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /**
-     *  res.json(await Service.getAll());
-     */
-
+    /* res.json(await Service.getAll()); */
+	// Lấy Dữ liệu từ Service ra và gửi về
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
@@ -69,9 +67,8 @@ export class RESOURCEController implements Controller {
   private async create(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /**
-     * await Service.create(new);
-     */
+    /* await Service.create(new); */
+	
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 

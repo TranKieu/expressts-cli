@@ -227,6 +227,12 @@ async function createPackage(projectDir: string) {
   pkg.devDependencies['@types/morgan'] = (await lastest(
     '@types/morgan'
   )) as string;
+  pkg.devDependencies['@types/jsonwebtoken'] = (await lastest(
+    '@types/jsonwebtoken'
+  )) as string;
+  pkg.devDependencies['@types/bcryptjs'] = (await lastest(
+    '@types/bcryptjs'
+  )) as string;
 
   //Dependencies
   pkg.dependencies['body-parser'] = (await lastest('body-parser')) as string;
@@ -238,6 +244,8 @@ async function createPackage(projectDir: string) {
   pkg.dependencies['class-validator'] = (await lastest(
     'class-validator'
   )) as string;
+  pkg.dependencies['jsonwebtoken'] = (await lastest('jsonwebtoken')) as string;
+  pkg.dependencies['bcryptjs'] = (await lastest('bcryptjs')) as string;
   // ghi file package
   try {
     const pkgFile = path.resolve(projectDir, 'package.json');
