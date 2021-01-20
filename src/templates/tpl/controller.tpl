@@ -14,7 +14,7 @@ import { log } from '../middlewares/log.middleware';
 export class RESOURCEController implements Controller {
 
   // URL luôn là số nhiều
-  private router = environment.API_URL + '/RESRCURI';
+  private router = environment.API_URL + '/RESRCURIs';
 
   init(httpServer: HttpServer): void {
 
