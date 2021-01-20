@@ -1,5 +1,4 @@
 import { HttpServer } from '../server/http-server';
-
 export interface Controller {
   /**
    * Khai báo các Routes ở init
@@ -19,8 +18,10 @@ export interface Controller {
   /** => Nguyên tắc xử lý Request:
    *
    * + Validate đầu vào tại Controller
-   * + Validate Entity tại Service
+   * + Tại Service truy vần và xử lý lỗi từ DB
+   * + Cố gắng truy vấn dữ liệu ít nhất có thể
    * + Xử lý Error tại Controller vs next để ErrorHandler làm việc
+   * + return ngay sau next để dừng lại
    * + Throw Error tại Service => chú ý loại lỗi
    */
 }
