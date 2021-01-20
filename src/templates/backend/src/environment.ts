@@ -4,6 +4,7 @@ export const environment = {
   PORT: ((process.env.PORT as unknown) as number) || 3000,
   TOKEN_HEADER: 'Authorization',
   TOKEN_KEY: '@Tab@llen',
+  TOKEN_EXP: '1h',
   CORS_OPT: {
     allowedHeaders: [
       'Origin',

@@ -4,14 +4,11 @@ import { Response, Request, NextFunction } from 'express';
 import { environment } from '../environment';
 
 // Errors
-import { MethodNotAllowed } from '../errors/methodnotallowed.error';
+import { MethodNotAllowed } from '../errors';
 
 // Import Services
 
-
 // Middelwares
-
-// test middleware
 import { log } from '../middlewares/log.middleware'; 
 
 export class RESOURCEController implements Controller {
@@ -40,17 +37,10 @@ export class RESOURCEController implements Controller {
     httpServer.delete(`${this.router}`, this.removeAll.bind(this));
   }
 
-  /** Các bước thực hiện:
-   *   + Kiểm tra dữ liệu đầu vào
-   *   + lấy dữ liệu từ Service vs dữ liệu => trycatch
-   *   + gửi về Client Data oder next(Exception)
-   */
-
   private async getAll(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /* res.json(await Service.getAll()); */
-	// Lấy Dữ liệu từ Service ra và gửi về
+
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
@@ -58,44 +48,34 @@ export class RESOURCEController implements Controller {
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
 
-    /**
-     * Service.getById(+req.params.id)
-     */
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async create(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /* await Service.create(new); */
-	
+   	
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async update(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /**
-     * await Service.update({ })
-     */
+    
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async remove(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /**
-     * await Service.remove(+req.params.id)
-     */
+    
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 
   private async removeAll(
     req: Request, res: Response, next: NextFunction
   ): Promise<void> {
-    /**
-     * await Service.deleteALL()
-     */
+    
     next(new MethodNotAllowed(req.method + ' : ' + req.url));
   }
 }

@@ -16,11 +16,9 @@ import {
   cannotGet
 } from '../middlewares/errorhandler.middleware';
 import { cors } from '../middlewares/cors.middleware';
-// tìm hiểu tại sao cần noCache
+
 import { noCache } from '../middlewares/nocache.middleware';
 
-// sử dụng khi cần đăng nhập
-// import { checkRole, authorization } from '../middlewares/auth.middleware';
 /**
  * helmet
  * compress
@@ -45,8 +43,12 @@ export class ExpressServer implements HttpServer {
      */
     // Đưa middleware cơ bản vào
     this.setupStandardMiddlewares(this.server);
+
     // add các Sercurity Middleware vào => phải đúng thứ tự
     this.setupSercurityMiddlewares(this.server);
+
+    // Đưa template vào nếu cần Font-end
+    this.setupTemplate(this.server);
 
     //addcontrollers
     this.addControllers(this.controllers);
@@ -90,12 +92,19 @@ export class ExpressServer implements HttpServer {
     server.use(bodyParser.json());
   }
 
+  //private setupTemplate(server: Express)
+  private setupTemplate(server: Express) {
+    server.set('views', 'src/views');
+    server.set('view engine', 'ejs');
+    server.use('/assets', express.static(path.join(__dirname, '../public')));
+  }
+
   /** Gọi các Router ra */
   private addControllers(controllers: Controller[]) {
     // Chỉ dùng dc this khi sử dụng arrow Function
     // vì nó lấy this = Function ngoài nó chứ ko phải chính nó
     controllers.forEach((controller) => controller.init(this));
-    /* 
+    /*  Nếu không dùng this
        this.controllers.forEach(function (controller) {
            controller.init(server);
        });
@@ -135,7 +144,7 @@ export class ExpressServer implements HttpServer {
     this.server.delete(url, handler);
   }
 
-  //log = In các Router được khai báo ra
+  // log = In các Router được khai báo ra
   showRouter(method: String, url: string): void {
     if (this.development) console.log(`Added route: ${method} : ${url}`);
   }

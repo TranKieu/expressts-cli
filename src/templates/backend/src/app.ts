@@ -1,10 +1,9 @@
 import 'reflect-metadata';
 import { ExpressServer } from './server/express-server';
-
+import { ConnectionOptions, createConnection } from 'typeorm';
 // Controllers
 import { CONTROLLERS } from './controllers';
 import { environment } from './environment';
-import { ConnectionOptions, createConnection } from 'typeorm';
 
 // sửa lại từ ormconfig.json => khi build thì đổi
 
