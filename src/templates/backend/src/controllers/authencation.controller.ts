@@ -37,9 +37,9 @@ export class AuthencationController implements Controller {
       authorization.bind(this),
       this.changePassword.bind(this)
     );
-    // Update email... có thể dùng PATCH
+    // Update email = lấy ID trong token
     httpServer.put(
-      `${this.router}/:id(${this.ID_PATTERN})/edit`,
+      `${this.router}`,
       authorization.bind(this),
       this.update.bind(this)
     );
@@ -126,10 +126,9 @@ export class AuthencationController implements Controller {
     next: NextFunction
   ): Promise<void> {
     const {
-      body: { email },
-      params: { id }
+      body: { email }
     } = req;
 
-    res.json({ message: `${email} : ${id}` });
+    res.json({ message: email });
   }
 }
