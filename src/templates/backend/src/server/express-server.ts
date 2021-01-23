@@ -2,7 +2,6 @@ import express, { Express, RequestHandler } from 'express';
 import { Server } from 'http';
 import * as http from 'http';
 import * as bodyParser from 'body-parser';
-import * as path from 'path';
 import morgan from 'morgan';
 
 // From SRC
@@ -47,9 +46,6 @@ export class ExpressServer implements HttpServer {
     // add các Sercurity Middleware vào => phải đúng thứ tự
     this.setupSercurityMiddlewares(this.server);
 
-    // Đưa template vào nếu cần Font-end
-    this.setupTemplate(this.server);
-
     //addcontrollers
     this.addControllers(this.controllers);
 
@@ -90,13 +86,6 @@ export class ExpressServer implements HttpServer {
     );
 
     server.use(bodyParser.json());
-  }
-
-  //private setupTemplate(server: Express)
-  private setupTemplate(server: Express) {
-    server.set('views', 'src/views');
-    server.set('view engine', 'ejs');
-    server.use('/assets', express.static(path.join(__dirname, '../public')));
   }
 
   /** Gọi các Router ra */
