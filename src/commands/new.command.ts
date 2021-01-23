@@ -88,8 +88,7 @@ export const createProject = async (name: string, options: Options) => {
 
   console.log(chalk.green.bold('\n\t Add view engine:'));
   // addViewEngine
-  const destFontend = path.join(projectDir, 'src');
-  await addViewEngine(options.template, destFontend);
+  await addViewEngine(options.template, projectDir);
 
   console.log();
   // addDatabaseDrive
@@ -108,10 +107,10 @@ async function addViewEngine(template: string | undefined, pDir: string) {
   }
   const setEngine =
     'private setupTemplate(server: Express) { \n' +
-    '\t\tserver.set("views", "src/views");\n' +
+    '\t\tserver.set("views", "./views");\n' +
     '\t\tserver.set("view engine", "ENGINE");\n' +
     '\t\tserver.use("/assets",\n' +
-    '\t\t\texpress.static(path.join(__dirname, "../public")));\n' +
+    '\t\t\texpress.static(path.join(__dirname, "../../public")));\n' +
     '\t}';
   let viewEngine = '';
   switch (template) {
@@ -128,8 +127,8 @@ async function addViewEngine(template: string | undefined, pDir: string) {
   }
   try {
     // copy fontend => tam thoi chi dung ejs
-    const srcFontend = path.resolve(__dirname, '../templates/fontend');
-    await copyDir(srcFontend, pDir);
+    const srcFontEnd = path.resolve(__dirname, '../templates/fontend');
+    await copyDir(srcFontEnd, pDir);
 
     // index.controller.ts có sẵn chỉ cần thay đổi
 
@@ -141,7 +140,7 @@ async function addViewEngine(template: string | undefined, pDir: string) {
 
     //
     const src = path.resolve(__dirname, '../templates/tpl/express-server.tpl');
-    const exServerdest = path.join(pDir, 'server/express-server.ts');
+    const exServerdest = path.join(pDir, 'src/server/express-server.ts');
 
     // neu ben trong ko throw error thi luon luon oki
     await modifyFile(src, exServerdest, search, replaces);
@@ -162,6 +161,10 @@ async function addDatabaseDrive(db: string, projectDir: string) {
       )) as string;
       orm.type = 'mssql';
       orm.port = 1433;
+      orm.host = 'localhost';
+      orm.username = '';
+      orm.password = '';
+      orm.database = '';
       break;
     case 'mongodb':
       pkg.dependencies.mongodb = (await lastest('mongodb')) as string;
@@ -169,7 +172,7 @@ async function addDatabaseDrive(db: string, projectDir: string) {
         '@types/mongodb'
       )) as string;
       orm.type = 'mongodb';
-      orm.port = 27017;
+      orm.url = 'mongodb://localhost:27017/<database>';
       orm.useNewUrlParser = true;
       orm.useUnifiedTopology = true;
       break;
@@ -177,7 +180,7 @@ async function addDatabaseDrive(db: string, projectDir: string) {
       pkg.dependencies.pg = (await lastest('pg')) as string;
       pkg.devDependencies['@types/pg'] = (await lastest('@types/pg')) as string;
       orm.type = 'pg';
-      orm.port = 5432;
+      orm.url = 'postgres://postgres:postgres@localhost:5432/<database>';
       break;
     case 'oracledb':
       pkg.dependencies.oracledb = (await lastest('oracledb')) as string;
@@ -186,6 +189,10 @@ async function addDatabaseDrive(db: string, projectDir: string) {
       )) as string;
       orm.type = 'oracledb';
       orm.port = 1521;
+      orm.host = 'localhost';
+      orm.username = '';
+      orm.password = '';
+      orm.database = '';
       break;
     default:
       pkg.dependencies.mysql = (await lastest('mysql')) as string;
@@ -194,6 +201,10 @@ async function addDatabaseDrive(db: string, projectDir: string) {
       )) as string;
       orm.type = 'mysql';
       orm.port = 3306;
+      orm.host = 'localhost';
+      orm.username = '';
+      orm.password = '';
+      orm.database = '';
       break;
   }
   // ghi file ormconfig.json

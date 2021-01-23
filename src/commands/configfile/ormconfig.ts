@@ -1,4 +1,15 @@
 class Ormconfig {
+  type?: string;
+  host?: string;
+  port?: number;
+  username?: string;
+  password?: string;
+  database?: string;
+
+  // chi vs mongodb
+  url?: string;
+  useUnifiedTopology?: boolean;
+  useNewUrlParser?: boolean;
   //Standart
   synchronize = true;
   logging = false;
@@ -11,15 +22,5 @@ class Ormconfig {
     migrationsDir: 'src/migration',
     subscribersDir: 'src/subscriber'
   };
-
-  type?: string;
-  host = 'localhost';
-  port?: number;
-  username = '';
-  password = '';
-  database = '';
-  // chi vs mongodb
-  useUnifiedTopology?: boolean;
-  useNewUrlParser?: boolean;
 }
 export const orm = new Ormconfig();

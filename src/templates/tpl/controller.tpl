@@ -38,44 +38,73 @@ export class RESOURCEController implements Controller {
   }
 
   private async getAll(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async getById(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+      res.json();
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async create(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-   	
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+      res.json();
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async update(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-    
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+      res.json();
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async remove(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-    
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+      res.json();
+    } catch (error) {
+      next(error);
+    }
   }
 
   private async removeAll(
-    req: Request, res: Response, next: NextFunction
+    req: Request,
+    res: Response,
+    next: NextFunction
   ): Promise<void> {
-    
-    next(new MethodNotAllowed(req.method + ' : ' + req.url));
+    try {
+      res.json();
+    } catch (error) {
+      next(error);
+    }
   }
 }
